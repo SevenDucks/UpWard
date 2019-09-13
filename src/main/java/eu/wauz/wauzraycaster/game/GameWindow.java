@@ -5,8 +5,18 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
+
+import eu.wauz.wauzraycaster.WrayUtils;
+import eu.wauz.wauzraycaster.entity.GameCamera;
+import eu.wauz.wauzraycaster.entity.MovingEntity;
+import eu.wauz.wauzraycaster.entity.TestEntity;
 
 public class GameWindow extends JFrame implements Runnable {
 
@@ -29,6 +39,8 @@ public class GameWindow extends JFrame implements Runnable {
 	private GameMap currentMap;
 	
 	private GameCamera currentCamera;
+	
+	private List<MovingEntity> entities = new ArrayList<>();
 	
 	public GameWindow(int width, int height) {
 		this.width = width;
@@ -76,6 +88,17 @@ public class GameWindow extends JFrame implements Runnable {
 		double delta = 0;
 		requestFocus();
 		
+		try {
+			AudioInputStream audioIn;
+			audioIn = AudioSystem.getAudioInputStream(WrayUtils.getResource("sound/doom/d_e1m1.mid"));
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioIn);
+			clip.start();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		while(isMainThreadRunning) {
 			long thisRun = System.nanoTime();
 			delta = delta + ((thisRun - lastRun) / interval);
@@ -84,7 +107,9 @@ public class GameWindow extends JFrame implements Runnable {
 			while (delta >= 1) {
 				if(currentCamera != null && currentMap != null) {
 					currentMap.render(currentCamera, pixels, width, height);
-					currentCamera.updatePosition(currentMap.getMapMatrix());
+					for(MovingEntity entity : entities) {
+						entity.updatePosition(currentMap.getMapMatrix());
+					}
 				}
 				delta--;
 			}
@@ -109,10 +134,17 @@ public class GameWindow extends JFrame implements Runnable {
 	
 	public void placeCamera(int xPos, int yPos) {
 		if(currentCamera != null) {
+			entities.remove(currentCamera);
 			removeKeyListener(currentCamera);
 		}
 		currentCamera = new GameCamera(xPos + 0.5, yPos + 0.5, 1, 0, 0, -0.7);
+		entities.add(currentCamera);
 		addKeyListener(currentCamera);
+	}
+	
+	public void placeEntity(int xPos, int yPos) {
+		MovingEntity entity = new TestEntity(xPos, yPos, 1, 0, 0, -0.7);
+		entities.add(entity);
 	}
 
 	public int getFps() {

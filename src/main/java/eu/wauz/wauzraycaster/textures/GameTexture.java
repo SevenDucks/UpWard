@@ -1,11 +1,11 @@
 package eu.wauz.wauzraycaster.textures;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
+
+import eu.wauz.wauzraycaster.WrayUtils;
 
 public class GameTexture {
 	
@@ -24,7 +24,7 @@ public class GameTexture {
 	
 	private void load() {
 		try {
-			BufferedImage image = ImageIO.read(getFile());
+			BufferedImage image = ImageIO.read(WrayUtils.getResource(path));
 			int x = image.getWidth();
 			int y = image.getHeight();
 			image.getRGB(0, 0, x, y, pixels, 0, x);
@@ -34,12 +34,6 @@ public class GameTexture {
 		}
 	}
 	
-	private File getFile() {
-		ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(path);
-        return new File(resource.getFile());
-	}
-
 	public int getSize() {
 		return size;
 	}

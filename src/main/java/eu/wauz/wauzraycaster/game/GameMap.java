@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import eu.wauz.wauzraycaster.entity.GameCamera;
 import eu.wauz.wauzraycaster.textures.GameTexture;
 import eu.wauz.wauzraycaster.textures.GameTileset;
 
@@ -111,8 +112,12 @@ public class GameMap {
 	        
 	        /** Now Calculate the Height of the Wall based on the Distance from the Camera */
 	        int lineHeight;
-	        if(perpWallDist > 0) lineHeight = Math.abs((int) (height / perpWallDist));
-	        else lineHeight = height;
+	        if(perpWallDist > 0) {
+	        	lineHeight = Math.abs((int) (height / perpWallDist));
+	        }
+	        else {
+	        	lineHeight = height;
+	        }
 	        
 	        /** Calculate Lowest and Highest Pixel to fill in current Stripe */
 	        int drawStart = -lineHeight/2+ height/2;
