@@ -11,6 +11,7 @@ import java.util.List;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.JFrame;
 
 import eu.wauz.wauzraycaster.WrayUtils;
@@ -30,6 +31,8 @@ public class GameWindow extends JFrame implements Runnable {
 	
 	private int height = 480;
 	
+	private String title;
+	
 	private BufferedImage display;
 	
 	private int[] pixels;
@@ -41,6 +44,10 @@ public class GameWindow extends JFrame implements Runnable {
 	private GameCamera currentCamera;
 	
 	private List<MovingEntity> entities = new ArrayList<>();
+	
+	private Clip bgm;
+	
+	private String bgmPath;
 	
 	public GameWindow(int width, int height) {
 		this.width = width;
@@ -63,10 +70,9 @@ public class GameWindow extends JFrame implements Runnable {
 		setBackground(Color.BLACK);
 		setLocationRelativeTo(null);
 		setVisible(true);
-		start();
 	}
 	
-	private synchronized void start() {
+	public synchronized void start() {
 		isMainThreadRunning = true;
 		mainThread.start();
 	}
@@ -75,8 +81,11 @@ public class GameWindow extends JFrame implements Runnable {
 		isMainThreadRunning = false;
 		try {
 			mainThread.join();
+			if(bgm != null) {
+				bgm.stop();
+			}
 		}
-		catch(InterruptedException e) {
+		catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -89,11 +98,18 @@ public class GameWindow extends JFrame implements Runnable {
 		requestFocus();
 		
 		try {
-			AudioInputStream audioIn;
-			audioIn = AudioSystem.getAudioInputStream(WrayUtils.getResource("sound/doom/d_e1m1.mid"));
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioIn);
-			clip.start();
+			if(bgmPath != null) {
+				AudioInputStream audioIn;
+				audioIn = AudioSystem.getAudioInputStream(WrayUtils.getResource(bgmPath));
+				bgm = AudioSystem.getClip();
+				bgm.open(audioIn);
+				bgm.setLoopPoints(0, -1);
+				FloatControl gainControl = (FloatControl) bgm.getControl(FloatControl.Type.MASTER_GAIN);
+				float range = gainControl.getMaximum() - gainControl.getMinimum();
+				float gain = (range * 0.75f) + gainControl.getMinimum();
+				gainControl.setValue(gain);
+				bgm.loop(Clip.LOOP_CONTINUOUSLY);
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -132,19 +148,28 @@ public class GameWindow extends JFrame implements Runnable {
 		currentMap = map;
 	}
 	
-	public void placeCamera(int xPos, int yPos) {
+	public void placeCamera(int matrixX, int matrixY) {
 		if(currentCamera != null) {
 			entities.remove(currentCamera);
 			removeKeyListener(currentCamera);
 		}
-		currentCamera = new GameCamera(xPos + 0.5, yPos + 0.5, 1, 0, 0, -0.7);
+		currentCamera = new GameCamera(matrixY + 0.5, currentMap.getMapWidth() - (matrixX + 0.5), 1, 0, 0, -0.7);
 		entities.add(currentCamera);
 		addKeyListener(currentCamera);
 	}
 	
-	public void placeEntity(int xPos, int yPos) {
-		MovingEntity entity = new TestEntity(xPos, yPos, 1, 0, 0, -0.7);
+	public void placeEntity(int matrixX, int matrixY) {
+		MovingEntity entity = new TestEntity(matrixY + 0.5, currentMap.getMapWidth() - (matrixX + 0.5), 1, 0, 0, -0.7);
 		entities.add(entity);
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+		super.setTitle(title);
 	}
 
 	public int getFps() {
@@ -153,6 +178,14 @@ public class GameWindow extends JFrame implements Runnable {
 
 	public void setFps(int fps) {
 		this.fps = fps;
+	}
+
+	public String getBgmPath() {
+		return bgmPath;
+	}
+
+	public void setBgmPath(String bgmPath) {
+		this.bgmPath = bgmPath;
 	}
 
 }

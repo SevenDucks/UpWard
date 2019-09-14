@@ -10,15 +10,9 @@ public class TestEntity extends MovingEntity {
 		if(true) {
 			moveForward(map);
 		}
-//		if(backward) {
-//			moveBackward(map);
-//		}
 		if(true) {
 			rotate(ROTATION_SPEED);
 		}
-//		if(right) {
-//			rotate(- ROTATION_SPEED);
-//		}
 	}
 
 }

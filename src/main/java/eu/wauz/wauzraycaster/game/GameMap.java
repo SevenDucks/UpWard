@@ -10,7 +10,11 @@ import eu.wauz.wauzraycaster.textures.GameTileset;
 
 public class GameMap {
 	
-	private int[][] mapMatrix;
+	private final int mapWidth;
+	
+	private final int mapHeight;
+	
+	private final int[][] mapMatrix;
 	
 	private GameTileset tileset;
 	
@@ -19,8 +23,13 @@ public class GameMap {
 	private Color floorColor = Color.DARK_GRAY;
 	
 	public GameMap(int[][] mapMatrix, GameTileset tileset) {
-		ArrayUtils.reverse(mapMatrix);
+		mapWidth = mapMatrix[0].length;
+		mapHeight = mapMatrix.length;
 		
+		ArrayUtils.reverse(mapMatrix);
+		for(int[] array : mapMatrix) {
+			ArrayUtils.reverse(array);
+		}
 		this.mapMatrix = mapMatrix;
 		this.tileset = tileset;
 	}
@@ -171,12 +180,16 @@ public class GameMap {
 	    return pixels;
 	}
 
-	public int[][] getMapMatrix() {
-		return mapMatrix;
+	public int getMapWidth() {
+		return mapWidth;
 	}
 
-	public void setMapMatrix(int[][] mapMatrix) {
-		this.mapMatrix = mapMatrix;
+	public int getMapHeight() {
+		return mapHeight;
+	}
+
+	public int[][] getMapMatrix() {
+		return mapMatrix;
 	}
 
 	public Color getCeilingColor() {
