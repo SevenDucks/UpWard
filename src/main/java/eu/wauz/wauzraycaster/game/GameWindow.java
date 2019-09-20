@@ -14,10 +14,10 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.swing.JFrame;
 
-import eu.wauz.wauzraycaster.WrayUtils;
 import eu.wauz.wauzraycaster.entity.GameCamera;
 import eu.wauz.wauzraycaster.entity.MovingEntity;
 import eu.wauz.wauzraycaster.entity.TestEntity;
+import eu.wauz.wauzraycaster.util.WrayUtils;
 
 public class GameWindow extends JFrame implements Runnable {
 
@@ -121,11 +121,9 @@ public class GameWindow extends JFrame implements Runnable {
 			lastRun = thisRun;
 			
 			while (delta >= 1) {
-				if(currentCamera != null && currentMap != null) {
-					currentMap.render(currentCamera, pixels, width, height);
-					for(MovingEntity entity : entities) {
-						entity.updatePosition(currentMap.getMapMatrix());
-					}
+				currentMap.render(this);
+				for(MovingEntity entity : entities) {
+					entity.updatePosition(currentMap.getMapMatrix());
 				}
 				delta--;
 			}
@@ -162,6 +160,22 @@ public class GameWindow extends JFrame implements Runnable {
 		MovingEntity entity = new TestEntity(matrixY + 0.5, currentMap.getMapWidth() - (matrixX + 0.5), 1, 0, 0, -0.7);
 		entities.add(entity);
 	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int[] getPixels() {
+		return pixels;
+	}
+
+	public void setPixels(int[] pixels) {
+		this.pixels = pixels;
+	}
 
 	public String getTitle() {
 		return title;
@@ -178,6 +192,14 @@ public class GameWindow extends JFrame implements Runnable {
 
 	public void setFps(int fps) {
 		this.fps = fps;
+	}
+	
+	public GameMap getCurrentMap() {
+		return currentMap;
+	}
+
+	public GameCamera getCurrentCamera() {
+		return currentCamera;
 	}
 
 	public String getBgmPath() {

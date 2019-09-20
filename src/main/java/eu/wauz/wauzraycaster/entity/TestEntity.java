@@ -6,6 +6,7 @@ public class TestEntity extends MovingEntity {
 		super(xPos, yPos, xDir, yDir, xPlane, yPlane);
 	}
 	
+	@Override
 	public void updatePosition(int[][] map) {
 		if(true) {
 			moveForward(map);

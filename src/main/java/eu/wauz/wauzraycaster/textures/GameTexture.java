@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import eu.wauz.wauzraycaster.WrayUtils;
+import eu.wauz.wauzraycaster.util.WrayUtils;
 
 public class GameTexture {
 	

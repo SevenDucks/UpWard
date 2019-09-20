@@ -3,7 +3,7 @@ package eu.wauz.wauzraycaster.entity;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import eu.wauz.wauzraycaster.Options;
+import eu.wauz.wauzraycaster.util.WrayOptions;
 
 public class GameCamera extends MovingEntity implements KeyListener {
 	
@@ -20,48 +20,49 @@ public class GameCamera extends MovingEntity implements KeyListener {
 	
 	@Override
 	public void keyPressed(KeyEvent key) {
-		if(key.getKeyCode() == Options.CONTROLS.getRotateLeft()) {
+		if(key.getKeyCode() == WrayOptions.CONTROLS.getRotateLeft()) {
 			leftRotate = true;
 		}
-		else if(key.getKeyCode() == Options.CONTROLS.getRotateRight()) {
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getRotateRight()) {
 			rightRotate = true;
 		}
-		else if(key.getKeyCode() == Options.CONTROLS.getMoveForward()) {
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getMoveForward()) {
 			forward = true;
 		}
-		else if(key.getKeyCode() == Options.CONTROLS.getMoveBackward()) {
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getMoveBackward()) {
 			backward = true;
 		}
-		else if(key.getKeyCode() == Options.CONTROLS.getMoveLeft()) {
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getMoveLeft()) {
 			left = true;
 		}
-		else if(key.getKeyCode() == Options.CONTROLS.getMoveRight()) {
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getMoveRight()) {
 			right = true;
 		}
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent key) {
-		if(key.getKeyCode() == Options.CONTROLS.getRotateLeft()) {
+		if(key.getKeyCode() == WrayOptions.CONTROLS.getRotateLeft()) {
 			leftRotate = false;
 		}
-		else if(key.getKeyCode() == Options.CONTROLS.getRotateRight()) {
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getRotateRight()) {
 			rightRotate = false;
 		}
-		else if(key.getKeyCode() == Options.CONTROLS.getMoveForward()) {
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getMoveForward()) {
 			forward = false;
 		}
-		else if(key.getKeyCode() == Options.CONTROLS.getMoveBackward()) {
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getMoveBackward()) {
 			backward = false;
 		}
-		else if(key.getKeyCode() == Options.CONTROLS.getMoveLeft()) {
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getMoveLeft()) {
 			left = false;
 		}
-		else if(key.getKeyCode() == Options.CONTROLS.getMoveRight()) {
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getMoveRight()) {
 			right = false;
 		}
 	}
 	
+	@Override
 	public void updatePosition(int[][] map) {
 		if(leftRotate) {
 			rotate(ROTATION_SPEED);

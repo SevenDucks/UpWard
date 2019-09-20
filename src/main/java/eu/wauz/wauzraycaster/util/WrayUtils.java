@@ -1,4 +1,4 @@
-package eu.wauz.wauzraycaster;
+package eu.wauz.wauzraycaster.util;
 
 import java.io.File;
 import java.net.URL;
