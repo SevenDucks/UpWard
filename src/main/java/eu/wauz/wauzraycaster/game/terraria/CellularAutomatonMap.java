@@ -4,22 +4,46 @@ import java.awt.Color;
 
 import eu.wauz.wauzraycaster.game.GameMap;
 import eu.wauz.wauzraycaster.game.GameWindow;
-import eu.wauz.wauzraycaster.textures.GameTileset;
-import eu.wauz.wauzraycaster.util.CellularAutomaton;
+import eu.wauz.wauzraycaster.generation.CellularAutomaton;
+import eu.wauz.wauzraycaster.generation.ResourceSpawner;
+import eu.wauz.wauzraycaster.generation.VegetationSpawner;
 
 public class CellularAutomatonMap extends GameMap {
 	
 	private int[] pixels;
 	
-	public CellularAutomatonMap(int[][] mapMatrix, GameTileset tileset) {
-		super(mapMatrix, tileset, false);
+	public CellularAutomatonMap(int[][] mapMatrix) {
+		super(mapMatrix, null, false);
 		
 		CellularAutomaton automaton = new CellularAutomaton(mapWidth, mapHeight);
-		automaton.setChanceToStartAlive(0.25f);
+		automaton.setChanceToStartAlive(0.28f);
 		automaton.setBirthLimit(3);
 		automaton.setDeathLimit(3);
-		automaton.run(10);
-		boolean[][] cellMatrix = automaton.getCellMatrix();
+		automaton.setLivingYSpaceTop(100);
+		automaton.setLivingYSpaceBottom(15);
+		automaton.setDeadXSpaceLeft(10);
+		automaton.setDeadXSpaceRight(10);
+		automaton.run(8);
+		
+		ResourceSpawner resourceSpawner = new ResourceSpawner(automaton);
+		resourceSpawner.setMinDeadNeighbours(4);
+		
+		resourceSpawner.setMinDepth(100);
+		resourceSpawner.setMaxDepth(250);
+		resourceSpawner.run(2, 0.030f);
+		
+		resourceSpawner.setMinDepth(150);
+		resourceSpawner.setMaxDepth(300);
+		resourceSpawner.run(3, 0.025f);
+		
+		resourceSpawner.setMinDepth(200);
+		resourceSpawner.setMaxDepth(350);
+		resourceSpawner.run(4, 0.020f);
+		
+		VegetationSpawner vegetationSpawner = new VegetationSpawner(automaton);
+		vegetationSpawner.run(5, 0.3f);
+		
+		int[][] cellMatrix = automaton.getCellMatrix();
 		
 		pixels = new int[mapWidth * mapHeight];
 		for(int i = 0; i < pixels.length; i++) {
@@ -29,7 +53,25 @@ public class CellularAutomatonMap extends GameMap {
 				x -= mapWidth;
 				y++;
 			}
-			Color color = cellMatrix[x][y] ? Color.ORANGE : Color.DARK_GRAY;
+			Color color;
+			switch (cellMatrix[x][y]) {
+			case 1:
+				color = Color.ORANGE;
+				break;
+			case 2:
+				color = Color.GREEN;
+				break;
+			case 3:
+				color = Color.CYAN;
+				break;
+			case 4:
+			case 5:
+				color = Color.MAGENTA;
+				break;
+			default:
+				color = Color.DARK_GRAY;
+				break;
+			}
 			pixels[i] = color.getRGB();
 		}
 	}

@@ -13,14 +13,13 @@ public class Main {
 	private static GameWindow game;
 	
 	public static void main(String [] args) {
-		loadCellularAutomatonTestMap();
+		loadCellularAutomatonTestMap(1200, 350);
 	}
 	
-	public static void loadCellularAutomatonTestMap() {
-		int[][] mapMatrix = new int[500][300];
-		GameTileset tileset = new GameTileset();
-		CellularAutomatonMap map = new CellularAutomatonMap(mapMatrix, tileset);
-		game = new GameWindow(500, 300);
+	public static void loadCellularAutomatonTestMap(int width, int height) {
+		int[][] mapMatrix = new int[width][height];
+		CellularAutomatonMap map = new CellularAutomatonMap(mapMatrix);
+		game = new GameWindow(width, height);
 		game.setFps(1);
 		game.loadMap(map);
 		game.setTitle("Cellular Automaton");

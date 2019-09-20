@@ -132,14 +132,19 @@ public class GameWindow extends JFrame implements Runnable {
 	}
 	
 	public void render() {
-		BufferStrategy bufferStrategy = getBufferStrategy();
-		if(bufferStrategy == null) {
-			createBufferStrategy(3);
-			return;
+		try {
+			BufferStrategy bufferStrategy = getBufferStrategy();
+			if(bufferStrategy == null) {
+				createBufferStrategy(3);
+				return;
+			}
+			Graphics graphics = bufferStrategy.getDrawGraphics();
+			graphics.drawImage(display, 0, 0, display.getWidth(), display.getHeight(), null);
+			bufferStrategy.show();
 		}
-		Graphics graphics = bufferStrategy.getDrawGraphics();
-		graphics.drawImage(display, 0, 0, display.getWidth(), display.getHeight(), null);
-		bufferStrategy.show();
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void loadMap(GameMap map) {
