@@ -14,15 +14,25 @@ public class CellularAutomatonMap extends GameMap {
 	
 	public CellularAutomatonMap(int[][] mapMatrix) {
 		super(mapMatrix, null, false);
-		
+	}
+	
+	@Override
+	public void render(GameWindow window) {
+		gnerate();
+		for(int i = 0; i < window.getPixels().length; i++) {
+			window.getPixels()[i] = pixels[i];
+		}
+	}
+	
+	public void gnerate() {
 		CellularAutomaton automaton = new CellularAutomaton(mapWidth, mapHeight);
 		automaton.setChanceToStartAlive(0.28f);
 		automaton.setBirthLimit(3);
 		automaton.setDeathLimit(3);
 		automaton.setLivingYSpaceTop(100);
-		automaton.setLivingYSpaceBottom(15);
-		automaton.setDeadXSpaceLeft(10);
-		automaton.setDeadXSpaceRight(10);
+		automaton.setLivingYSpaceBottom(25);
+		automaton.setDeadXSpaceLeft(15);
+		automaton.setDeadXSpaceRight(15);
 		automaton.run(8);
 		
 		ResourceSpawner resourceSpawner = new ResourceSpawner(automaton);
@@ -73,13 +83,6 @@ public class CellularAutomatonMap extends GameMap {
 				break;
 			}
 			pixels[i] = color.getRGB();
-		}
-	}
-	
-	@Override
-	public void render(GameWindow window) {
-		for(int i = 0; i < window.getPixels().length; i++) {
-			window.getPixels()[i] = pixels[i];
 		}
 	}
 
