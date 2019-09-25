@@ -1,15 +1,15 @@
-package eu.wauz.wauzraycaster.entity;
+package eu.wauz.wauzraycaster.entity.doom;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
+import eu.wauz.wauzraycaster.entity.Controller;
 import eu.wauz.wauzraycaster.util.WrayOptions;
 
-public class GameCamera extends MovingEntity implements KeyListener {
+public class DoomCamera extends DoomEntity implements Controller {
 	
 	private boolean leftRotate, rightRotate, forward, backward, left, right;
 	
-	public GameCamera(double xPos, double yPos, double xDir, double yDir, double xPlane, double yPlane) {
+	public DoomCamera(double xPos, double yPos, double xDir, double yDir, double xPlane, double yPlane) {
 		super(xPos, yPos, xDir, yDir, xPlane, yPlane);
 	}
 	

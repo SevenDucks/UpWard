@@ -25,15 +25,7 @@ public class CellularAutomatonMap extends GameMap {
 	}
 	
 	public void gnerate() {
-		CellularAutomaton automaton = new CellularAutomaton(mapWidth, mapHeight);
-		automaton.setChanceToStartAlive(0.28f);
-		automaton.setBirthLimit(3);
-		automaton.setDeathLimit(3);
-		automaton.setLivingYSpaceTop(100);
-		automaton.setLivingYSpaceBottom(25);
-		automaton.setDeadXSpaceLeft(15);
-		automaton.setDeadXSpaceRight(15);
-		automaton.run(8);
+		CellularAutomaton automaton = new CellularAutomaton(mapWidth, mapHeight).withTerrariaPreset();
 		
 		ResourceSpawner resourceSpawner = new ResourceSpawner(automaton);
 		resourceSpawner.setMinDeadNeighbours(4);

@@ -14,9 +14,10 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.swing.JFrame;
 
-import eu.wauz.wauzraycaster.entity.GameCamera;
+import eu.wauz.wauzraycaster.entity.Controller;
 import eu.wauz.wauzraycaster.entity.MovingEntity;
-import eu.wauz.wauzraycaster.entity.TestEntity;
+import eu.wauz.wauzraycaster.entity.doom.DoomCamera;
+import eu.wauz.wauzraycaster.entity.doom.TestEntity;
 import eu.wauz.wauzraycaster.util.WrayUtils;
 
 public class GameWindow extends JFrame implements Runnable {
@@ -41,7 +42,7 @@ public class GameWindow extends JFrame implements Runnable {
 	
 	private GameMap currentMap;
 	
-	private GameCamera currentCamera;
+	private Controller currentCamera;
 	
 	private List<MovingEntity> entities = new ArrayList<>();
 	
@@ -152,13 +153,30 @@ public class GameWindow extends JFrame implements Runnable {
 	}
 	
 	public void placeCamera(int matrixX, int matrixY) {
-		if(currentCamera != null) {
-			entities.remove(currentCamera);
-			removeKeyListener(currentCamera);
+		currentCamera = new DoomCamera(matrixY + 0.5, currentMap.getMapWidth() - (matrixX + 0.5), 1, 0, 0, -0.7);
+		if(currentCamera instanceof MovingEntity) {
+			entities.add((MovingEntity) currentCamera);
 		}
-		currentCamera = new GameCamera(matrixY + 0.5, currentMap.getMapWidth() - (matrixX + 0.5), 1, 0, 0, -0.7);
-		entities.add(currentCamera);
 		addKeyListener(currentCamera);
+	}
+	
+	public void placeCamera(Controller camera) {
+		removeCamera();
+		currentCamera = camera;
+		if(currentCamera instanceof MovingEntity) {
+			entities.add((MovingEntity) currentCamera);
+		}
+		addKeyListener(currentCamera);
+	}
+	
+	public void removeCamera() {
+		if(currentCamera == null) {
+			return;
+		}
+		if(currentCamera instanceof MovingEntity) {
+			entities.remove((MovingEntity) currentCamera);
+		}
+		removeKeyListener(currentCamera);
 	}
 	
 	public void placeEntity(int matrixX, int matrixY) {
@@ -203,7 +221,7 @@ public class GameWindow extends JFrame implements Runnable {
 		return currentMap;
 	}
 
-	public GameCamera getCurrentCamera() {
+	public Controller getCurrentCamera() {
 		return currentCamera;
 	}
 

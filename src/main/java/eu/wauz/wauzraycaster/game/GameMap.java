@@ -12,7 +12,7 @@ public abstract class GameMap {
 	
 	private final int[][] mapMatrix;
 	
-	private GameTileset tileset;
+	private final GameTileset tileset;
 	
 	public GameMap(int[][] mapMatrix, GameTileset tileset, boolean inverted) {
 		if(inverted) {

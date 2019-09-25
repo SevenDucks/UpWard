@@ -103,6 +103,19 @@ public class CellularAutomaton {
 		return 8 - countLivingNeighbours(x, y);
 	}
 	
+	public CellularAutomaton withTerrariaPreset() {
+		setChanceToStartAlive(0.28f);
+		setBirthLimit(3);
+		setDeathLimit(3);
+		setLivingYSpaceTop(100);
+		setLivingYSpaceBottom(25);
+		setDeadXSpaceLeft(15);
+		setDeadXSpaceRight(15);
+		run(16);
+		
+		return this;
+	}
+	
 	public float random() {
 		return random.nextFloat();
 	}

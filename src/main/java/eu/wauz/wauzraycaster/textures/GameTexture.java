@@ -1,5 +1,6 @@
 package eu.wauz.wauzraycaster.textures;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -19,10 +20,18 @@ public class GameTexture {
 		this.path = path;
 		this.size = size;
 		this.pixels = new int[size * size];
-		load();
+		loadImage();
 	}
 	
-	private void load() {
+	public GameTexture(Color color, int size) {
+		this.size = size;
+		this.pixels = new int[size * size];
+		for(int i = 0; i < pixels.length; i++) {
+			pixels[i] = color.getRGB();
+		}
+	}
+	
+	private void loadImage() {
 		try {
 			BufferedImage image = ImageIO.read(WrayUtils.getResource(path));
 			int x = image.getWidth();

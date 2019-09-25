@@ -1,6 +1,6 @@
-package eu.wauz.wauzraycaster.entity;
+package eu.wauz.wauzraycaster.entity.doom;
 
-public class TestEntity extends MovingEntity {
+public class TestEntity extends DoomEntity {
 	
 	public TestEntity(double xPos, double yPos, double xDir, double yDir, double xPlane, double yPlane) {
 		super(xPos, yPos, xDir, yDir, xPlane, yPlane);

@@ -2,7 +2,7 @@ package eu.wauz.wauzraycaster.game.doom;
 
 import java.awt.Color;
 
-import eu.wauz.wauzraycaster.entity.GameCamera;
+import eu.wauz.wauzraycaster.entity.doom.DoomCamera;
 import eu.wauz.wauzraycaster.game.GameWindow;
 import eu.wauz.wauzraycaster.textures.GameTexture;
 import eu.wauz.wauzraycaster.textures.GameTileset;
@@ -32,7 +32,11 @@ public class DoomRenderer {
 	}
 
 	public int[] render(GameWindow window) {
-		GameCamera camera = window.getCurrentCamera();
+		if(!(window.getCurrentCamera() instanceof DoomCamera)) {
+			return window.getPixels();
+		}
+		
+		DoomCamera camera = (DoomCamera) window.getCurrentCamera();
 		pixels = window.getPixels();
 		windowWidth = window.getWidth();
 		windowHeight = window.getHeight();
