@@ -15,33 +15,9 @@ public class Main {
 	private static GameWindow game;
 	
 	public static void main(String [] args) {
-//		loadDoomTestMap();
-		loadTerrariaTestMap(1200, 800);
-//		loadCellularAutomatonTestMap(1200, 350);
-	}
-	
-	public static void loadTerrariaTestMap(int width, int height) {
-		int[][] mapMatrix = new int[width][height];
-		GameTileset tileset = new GameTileset();
-		tileset.add(new GameTexture(Color.GREEN.darker(), 8));
-		tileset.add(new GameTexture(Color.BLUE.darker().darker().darker(), 8));
-		TerrariaMap map = new TerrariaMap(mapMatrix, tileset);
-		game = new GameWindow(width, height);
-		game.setFps(30);
-		game.loadMap(map);
-		game.placeCamera(new TerrariaCamera(400, 120, 0, 0, 0, 0));
-		game.setTitle("Terrario");
-		game.start();
-	}
-	
-	public static void loadCellularAutomatonTestMap(int width, int height) {
-		int[][] mapMatrix = new int[width][height];
-		CellularAutomatonMap map = new CellularAutomatonMap(mapMatrix);
-		game = new GameWindow(width, height);
-		game.setFps(1);
-		game.loadMap(map);
-		game.setTitle("Cellular Automaton");
-		game.start();
+		loadDoomTestMap();
+//		loadCellularAutomatonTestMap();
+//		loadTerrariaTestMap();
 	}
 	
 	public static void loadDoomTestMap() {
@@ -78,6 +54,37 @@ public class Main {
 		game.placeEntity(2, 15);
 		game.setTitle("WOOM");
 		game.setBgmPath("sound/doom/d_e1m1.mid");
+		game.start();
+	}
+	
+	public static void loadCellularAutomatonTestMap() {
+		int width = 1200;
+		int height = 350;
+		int[][] mapMatrix = new int[width][height];
+		CellularAutomatonMap map = new CellularAutomatonMap(mapMatrix);
+		game = new GameWindow(width, height);
+		game.setFps(1);
+		game.loadMap(map);
+		game.setTitle("Cellular Automaton");
+		game.start();
+	}
+	
+	public static void loadTerrariaTestMap() {		
+		int[][] mapMatrix = new int[1200][350];
+		GameTileset tileset = new GameTileset();
+		tileset.add(new GameTexture("images/terraria/dirt.png", 16));
+		tileset.add(new GameTexture(Color.BLUE.darker().darker(), 16));
+		tileset.add(new GameTexture("images/terraria/stone.png", 16));
+		tileset.add(new GameTexture("images/terraria/leaf.png", 16));
+		tileset.add(new GameTexture("images/terraria/water.png", 16));
+		TerrariaMap map = new TerrariaMap(mapMatrix, tileset);
+		map.setBlockSize(16);
+		map.generate();
+		game = new GameWindow(720, 480);
+		game.setFps(60);
+		game.loadMap(map);
+		game.placeCamera(new TerrariaCamera(400, 120, 0, 0, 0, 0));
+		game.setTitle("Terrario");
 		game.start();
 	}
 

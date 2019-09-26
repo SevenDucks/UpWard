@@ -12,7 +12,7 @@ public class TerrariaCamera extends MovingEntity implements Controller {
 
 	public TerrariaCamera(double xPos, double yPos, double xDir, double yDir, double xPlane, double yPlane) {
 		super(xPos, yPos, xDir, yDir, xPlane, yPlane);
-		MOVEMENT_SPEED = 0.0625;
+		MOVEMENT_SPEED = 0.25;
 	}
 
 	@Override

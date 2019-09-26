@@ -16,12 +16,14 @@ public class TerrariaBlock {
 	}
 	
 	public void render(int[][] pixels, int startX, int startY) {
-		for(int pixelX = startX; pixelX < startX + blockSize && pixelX < pixels.length; pixelX++) {
-			for(int pixelY = startY; pixelY < startY + blockSize && pixelY < pixels[0].length; pixelY++) {
+		int pixel = -1;
+		for(int pixelY = startY; pixelY < startY + blockSize && pixelY < pixels[0].length; pixelY++) {
+			for(int pixelX = startX; pixelX < startX + blockSize && pixelX < pixels.length; pixelX++) {
+				pixel++;
 				if(pixelX < 0 || pixelY < 0) {
 					continue;
 				}
-				pixels[pixelX][pixelY] = texture.getPixels()[0];
+				pixels[pixelX][pixelY] = texture.getPixels()[pixel];
 			}
 		}
 	}

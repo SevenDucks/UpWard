@@ -108,10 +108,10 @@ public class CellularAutomaton {
 		setBirthLimit(3);
 		setDeathLimit(3);
 		setLivingYSpaceTop(100);
-		setLivingYSpaceBottom(25);
+		setLivingYSpaceBottom(30);
 		setDeadXSpaceLeft(15);
 		setDeadXSpaceRight(15);
-		run(16);
+		run(18);
 		
 		return this;
 	}
