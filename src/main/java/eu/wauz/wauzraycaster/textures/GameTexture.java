@@ -8,14 +8,34 @@ import javax.imageio.ImageIO;
 
 import eu.wauz.wauzraycaster.util.WrayUtils;
 
+/**
+ * A square shaped texture, which is rendered into the game.
+ * 
+ * @author Wauzmons
+ */
 public class GameTexture {
 	
+	/**
+	 * The path to the texture in the resources folder.
+	 */
 	private String path;
 	
+	/**
+	 * The width / height of the texture in pixels.
+	 */
 	private final int size;
 	
+	/**
+	 * The rgb pixels of the texture.
+	 */
 	private final int[] pixels;
 	
+	/**
+	 * Creates a texture from a file in the resources folder.
+	 * 
+	 * @param path The path to the texture in the resources folder.
+	 * @param size The width / height of the texture in pixels.
+	 */
 	public GameTexture(String path, int size) {
 		this.path = path;
 		this.size = size;
@@ -23,6 +43,12 @@ public class GameTexture {
 		loadImage();
 	}
 	
+	/**
+	 * Creates a texture from a single color.
+	 * 
+	 * @param color The plain color of the texture.
+	 * @param size The width / height of the texture in pixels.
+	 */
 	public GameTexture(Color color, int size) {
 		this.size = size;
 		this.pixels = new int[size * size];
@@ -31,6 +57,11 @@ public class GameTexture {
 		}
 	}
 	
+	/**
+	 * Loads the pixels from a file in the resources folder.
+	 * 
+	 * @see GameTexture#GameTexture(String, int)
+	 */
 	private void loadImage() {
 		try {
 			BufferedImage image = ImageIO.read(WrayUtils.getResource(path));
@@ -43,10 +74,16 @@ public class GameTexture {
 		}
 	}
 	
+	/**
+	 * @return The width / height of the texture in pixels.
+	 */
 	public int getSize() {
 		return size;
 	}
 
+	/**
+	 * @return The rgb pixels of the texture.
+	 */
 	public int[] getPixels() {
 		return pixels;
 	}
