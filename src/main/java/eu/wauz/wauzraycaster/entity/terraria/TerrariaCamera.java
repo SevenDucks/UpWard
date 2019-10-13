@@ -4,22 +4,50 @@ import java.awt.event.KeyEvent;
 
 import eu.wauz.wauzraycaster.entity.Controller;
 import eu.wauz.wauzraycaster.entity.MovingEntity;
+import eu.wauz.wauzraycaster.game.terraria.TerrariaMap;
 import eu.wauz.wauzraycaster.util.WrayOptions;
 
+/**
+ * A camera entity, that can move freely across a terraria map.
+ * 
+ * @author Wauzmons
+ *
+ * @see TerrariaMap
+ */
 public class TerrariaCamera extends MovingEntity implements Controller {
 	
+	/**
+	 * If the entity is moving in this direction
+	 */
 	private boolean up, down, left, right;
 
+	/**
+	 * Creates a new entity, with given starting position.
+	 * 
+	 * @param xPos
+	 * @param yPos
+	 * @param xDir
+	 * @param yDir
+	 * @param xPlane
+	 * @param yPlane
+	 */
 	public TerrariaCamera(double xPos, double yPos, double xDir, double yDir, double xPlane, double yPlane) {
 		super(xPos, yPos, xDir, yDir, xPlane, yPlane);
 		MOVEMENT_SPEED = 0.25;
 	}
 
+	/**
+	 * Determine what to do if a key is typed.
+	 */
 	@Override
 	public void keyTyped(KeyEvent key) {
 		
 	}
 	
+	/**
+	 * Determine what to do if a key is pressed.
+	 * Starts directional movement.
+	 */
 	@Override
 	public void keyPressed(KeyEvent key) {
 		if(key.getKeyCode() == WrayOptions.CONTROLS.getMoveForward()) {
@@ -36,6 +64,10 @@ public class TerrariaCamera extends MovingEntity implements Controller {
 		}
 	}
 
+	/**
+	 * Determine what to do if a key is released.
+	 * Stops directional movement.
+	 */
 	@Override
 	public void keyReleased(KeyEvent key) {
 		if(key.getKeyCode() == WrayOptions.CONTROLS.getMoveForward()) {
@@ -52,6 +84,9 @@ public class TerrariaCamera extends MovingEntity implements Controller {
 		}
 	}
 
+	/**
+	 * Moves into the active directions, if possible.
+	 */
 	@Override
 	public void updatePosition(int[][] map) {
 		if(up) {
@@ -68,18 +103,38 @@ public class TerrariaCamera extends MovingEntity implements Controller {
 		}
 	}
 	
+	/**
+	 * Moves up.
+	 * 
+	 * @param map The map to move on.
+	 */
 	public void moveUp(int[][] map) {
 		yPos -= MOVEMENT_SPEED;
 	}
 	
+	/**
+	 * Moves down.
+	 * 
+	 * @param map The map to move on.
+	 */
 	public void moveDown(int[][] map) {
 		yPos += MOVEMENT_SPEED;
 	}
 	
+	/**
+	 * Moves left.
+	 * 
+	 * @param map The map to move on.
+	 */
 	public void moveLeft(int[][] map) {
 		xPos -= MOVEMENT_SPEED;
 	}
 	
+	/**
+	 * Moves right.
+	 * 
+	 * @param map The map to move on.
+	 */
 	public void moveRight(int[][] map) {
 		xPos += MOVEMENT_SPEED;
 	}

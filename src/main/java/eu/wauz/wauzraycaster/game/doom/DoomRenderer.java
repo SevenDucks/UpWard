@@ -7,22 +7,53 @@ import eu.wauz.wauzraycaster.game.GameWindow;
 import eu.wauz.wauzraycaster.textures.GameTexture;
 import eu.wauz.wauzraycaster.textures.GameTileset;
 
+/**
+ * A renderer for pseudo 3D doom-like levels.
+ * 
+ * @author Wauzmons
+ */
 public class DoomRenderer {
 	
+	/**
+	 * The pixels for the game window.
+	 */
 	private int[] pixels;
 	
+	/**
+	 * The height of the game window.
+	 */
 	private int windowWidth;
 	
+	/**
+	 * The width of the game window.
+	 */
 	private int windowHeight;
 	
+	/**
+	 * The map, this renderer is working with.
+	 */
 	private DoomMap map;
 	
+	/**
+	 * The tileset to use, for texturing the map.
+	 */
 	private GameTileset tileset;
 	
+	/**
+	 * The color of the level's ceiling.
+	 */
 	private Color ceilingColor;
 	
+	/**
+	 * The color of the level's floor.
+	 */
 	private Color floorColor;
 	
+	/**
+	 * Creates a renderer, that fills out the pixels of the game window.
+	 * 
+	 * @param map The map, this renderer is working with.
+	 */
 	public DoomRenderer(DoomMap map) {
 		this.map = map;
 		tileset = map.getTileset();
@@ -31,9 +62,15 @@ public class DoomRenderer {
 		floorColor = Color.DARK_GRAY;
 	}
 
-	public int[] render(GameWindow window) {
+	/**
+	 * Runs the renderer, to fill out the window.
+	 * TODO: Split this up. It is far to complex.
+	 * 
+	 * @param window The window, that should be filled with pixels.
+	 */
+	public void render(GameWindow window) {
 		if(!(window.getCurrentCamera() instanceof DoomCamera)) {
-			return window.getPixels();
+			return;
 		}
 		
 		DoomCamera camera = (DoomCamera) window.getCurrentCamera();
@@ -49,25 +86,29 @@ public class DoomRenderer {
 	        double rayDirX = camera.getxDir() + camera.getxPlane() * cameraX;
 	        double rayDirY = camera.getyDir() + camera.getyPlane() * cameraX;
 	        
-	        /** Determine Map Position */
+	        /** Determine the camera position. */
 	        int mapX = (int) camera.getxPos();
 	        int mapY = (int) camera.getyPos();
 	        
-	        /** Length of Ray from current Position to next X or Y-Side */
+	        /** The length of the ray from the current position to the next x or y-side. */
 	        double sideDistX;
 	        double sideDistY;
 	        
-	        /** Length of Ray from one Side to next in Map */
+	        /** The length of the ray from one side to the next of the map. */
 	        double deltaDistX = Math.sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
 	        double deltaDistY = Math.sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
 	        double perpWallDist;
 	        
-	        /** Direction to go in X and Y */
+	        /** Direction to go in x and y. */
 	        int stepX, stepY;
-	        boolean hit = false;	/** Was a wall hit? */
-	        int side = 0;			/** Was the wall vertical or horizontal? */
 	        
-	        /** Figure out the Step Direction and initial Distance to a Side */
+	        /** Was a wall hit? */
+	        boolean hit = false;	
+	        
+	        /** Was the wall vertical or horizontal? */
+	        int side = 0;
+	        
+	        /** Figure out the step direction and initial distance to a side. */
 	        if (rayDirX < 0)
 	        {
 	            stepX = -1;
@@ -91,9 +132,9 @@ public class DoomRenderer {
 	        }
 	        
 	        
-	        /** Loop to find where the Ray hits a Wall */
+	        /** Loop to find where the ray hits a wall. */
 	        while(!hit) {
-	        	/** Jump to next Square */
+	        	/** Jump to the next square. */
 	            if (sideDistX < sideDistY)
 	            {
 	                sideDistX += deltaDistX;
@@ -106,13 +147,14 @@ public class DoomRenderer {
 	                mapY += stepY;
 	                side = 1;
 	            }
-	            /** Check if ray has hit a wall */
+	            
+	            /** Check if the ray has hit a wall. */
 	            if(mapMatrix[mapX][mapY] > 0) {
 	            	hit = true;
 	            }
 	        }
 	        
-	        /** Calculate Distance to the Point of Impact */
+	        /** Calculate the distance to the point of impact. */
 	        if(side == 0) {
 	        	perpWallDist = Math.abs((mapX - camera.getxPos() + (1 - stepX) / 2) / rayDirX);
 	        }
@@ -120,7 +162,7 @@ public class DoomRenderer {
 	        	perpWallDist = Math.abs((mapY - camera.getyPos() + (1 - stepY) / 2) / rayDirY);   
 	        }
 	        
-	        /** Now Calculate the Height of the Wall based on the Distance from the Camera */
+	        /** Now calculate the height of the wall, based on the distance from the camera. */
 	        int lineHeight;
 	        if(perpWallDist > 0) {
 	        	lineHeight = Math.abs((int) (windowHeight / perpWallDist));
@@ -129,7 +171,7 @@ public class DoomRenderer {
 	        	lineHeight = windowHeight;
 	        }
 	        
-	        /** Calculate Lowest and Highest Pixel to fill in current Stripe */
+	        /** Calculate the lowest and highest pixel, to fill in the current stripe. */
 	        int drawStart = -lineHeight/2+ windowHeight/2;
 	        if(drawStart < 0) {
 	        	drawStart = 0;
@@ -139,20 +181,23 @@ public class DoomRenderer {
 	        	drawEnd = windowHeight - 1;
 	        }
 	        
-	        /** Add a Texture */
+	        /** Add a texture. */
 	        int texNum = mapMatrix[mapX][mapY];
-	        double wallX;	/** Exact Position of where Wall was hit */
+	        
+	        /** The exact position of where the wall was hit. */
+	        double wallX;
+	        
 	        if(side == 1) {
-	        	/** Y-Axis Wall */
+	        	/** A y-axis wall. */
 	            wallX = (camera.getxPos() + ((mapY - camera.getyPos() + (1 - stepY) / 2) / rayDirY) * rayDirX);
 	        }
 	        else {
-	        	/** X-Axis Wall */
+	        	/** A x-axis wall. */
 	            wallX = (camera.getyPos() + ((mapX - camera.getxPos() + (1 - stepX) / 2) / rayDirX) * rayDirY);
 	        }
 	        wallX -= Math.floor(wallX);
 	        
-	        /** X Coordinate on the Texture */
+	        /** The x coordinate on the texture. */
 	        int texX = (int) (wallX * (tileset.get(texNum).getSize()));
 	        if(side == 0 && rayDirX > 0) {
 	        	texX = tileset.get(texNum).getSize() - texX - 1;
@@ -161,7 +206,7 @@ public class DoomRenderer {
 	        	texX = tileset.get(texNum).getSize() - texX - 1;
 	        }
 	        
-	        /** Y Coordinate on the Texture */
+	        /** The y coordinate on the texture. */
 	        for(int y = drawStart; y < drawEnd; y++) {
 	            int texY = (((y * 2 - windowHeight + lineHeight) << 6) / lineHeight) / 2;
 	            int color;
@@ -172,15 +217,18 @@ public class DoomRenderer {
 	            	color = texture.getPixels()[pixel];
 	            }
 	            else {
-	            	/** Make Y Sides Darker */
+	            	/** Make y sides darker. */
 	            	color = (texture.getPixels()[pixel] >> 1) & 8355711;
 	            }
 	            pixels[x + y * windowWidth] = color;
 	        }
 	    }
-	    return pixels;
 	}
 	
+	/**
+	 * Fills the upper half of the pixels with the ceiling color,
+	 * and the lower half with the floor color.
+	 */
 	private void paintFloorAndCeiling() {
 		for(int n = 0; n < pixels.length / 2; n++) {
 	        pixels[n] = ceilingColor.getRGB();
@@ -190,18 +238,30 @@ public class DoomRenderer {
 	    }
 	}
 
+	/**
+	 * @return The color of the level's ceiling.
+	 */
 	public Color getCeilingColor() {
 		return ceilingColor;
 	}
 
+	/**
+	 * @param ceilingColor The new color of the level's ceiling.
+	 */
 	public void setCeilingColor(Color ceilingColor) {
 		this.ceilingColor = ceilingColor;
 	}
 
+	/**
+	 * @return The color of the level's floor.
+	 */
 	public Color getFloorColor() {
 		return floorColor;
 	}
 
+	/**
+	 * @param floorColor The new color of the level's floor.
+	 */
 	public void setFloorColor(Color floorColor) {
 		this.floorColor = floorColor;
 	}

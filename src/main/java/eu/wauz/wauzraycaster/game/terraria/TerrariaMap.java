@@ -7,16 +7,52 @@ import eu.wauz.wauzraycaster.generation.ResourceSpawner;
 import eu.wauz.wauzraycaster.generation.VegetationSpawner;
 import eu.wauz.wauzraycaster.textures.GameTileset;
 
+/**
+ * A map for random terraria-like world generation.
+ * 
+ * @author Wauzmons
+ */
 public class TerrariaMap extends GameMap {
 	
+	/**
+	 * The renderer, that fills out the pixels of the game window.
+	 */
 	private TerrariaRenderer renderer = new TerrariaRenderer(this);
 	
+	/**
+	 * The blocks, that make up the world.
+	 */
 	private TerrariaBlock[][] blocks;
 	
+	/**
+	 * Creates a new terraria map with the size of the given map matrix.
+	 * 
+	 * @param mapMatrix The empty game map, for measurement.
+	 * @param tileset The tileset to use, for texturing the map.
+	 */
 	public TerrariaMap(int[][] mapMatrix, GameTileset tileset) {
 		super(mapMatrix, tileset, false);
 	}
+
+	/**
+	 * Runs the renderer, to fill out the window.
+	 * 
+	 * @param window The window, that should be filled with pixels.
+	 * 
+	 * @see TerrariaRenderer
+	 */
+	@Override
+	public void render(GameWindow window) {
+		renderer.render(window);
+	}
 	
+	/**
+	 * Creates a new cellular automaton, for a new map.
+	 * Automatically maps values to block textures from the tileset.
+	 * 
+	 * @see CellularAutomaton
+	 * @see TerrariaBlock
+	 */
 	public void generate() {
 		blocks = new TerrariaBlock[mapWidth][mapHeight];
 		
@@ -50,11 +86,6 @@ public class TerrariaMap extends GameMap {
 		}
 	}
 
-	@Override
-	public void render(GameWindow window) {
-		renderer.render(window);
-	}
-
 	public int getBlockSize() {
 		return renderer.getBlockSize();
 	}
@@ -63,10 +94,16 @@ public class TerrariaMap extends GameMap {
 		renderer.setBlockSize(blockSize);
 	}
 
+	/**
+	 * @return The blocks, that make up the world.
+	 */
 	public TerrariaBlock[][] getBlocks() {
 		return blocks;
 	}
 
+	/**
+	 * @param blocks The new blocks, that make up the world.
+	 */
 	public void setBlocks(TerrariaBlock[][] blocks) {
 		this.blocks = blocks;
 	}

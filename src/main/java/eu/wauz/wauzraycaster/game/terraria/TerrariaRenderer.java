@@ -3,27 +3,64 @@ package eu.wauz.wauzraycaster.game.terraria;
 import eu.wauz.wauzraycaster.entity.MovingEntity;
 import eu.wauz.wauzraycaster.game.GameWindow;
 
+/**
+ * A renderer for random terraria-like world generation.
+ * 
+ * @author Wauzmons
+ */
 public class TerrariaRenderer {
 	
+	/**
+	 * The pixels for the game window.
+	 */
 	private int[][] pixels;
 	
+	/**
+	 * The map, this renderer is working with.
+	 */
 	private TerrariaMap map;
 	
+	/**
+	 * The horizontal pixel, where the rendering should start.
+	 */
 	private int startPixelX;
 	
+	/**
+	 * The vertical pixel, where the rendering should start.
+	 */
 	private int startPixelY;
 	
+	/**
+	 * The horizontal block, where the rendering should start.
+	 */
 	private int startBlockX;
 	
+	/**
+	 * The vertical block, where the rendering should start.
+	 */
 	private int startBlockY;
 	
+	/**
+	 * The length of a block in pixels.
+	 */
 	private int blockSize = 16;
 	
+	/**
+	 * Creates a renderer, that fills out the pixels of the game window.
+	 * 
+	 * @param map The map, this renderer is working with.
+	 */
 	public TerrariaRenderer(TerrariaMap map) {
 		this.map = map;
 	}
 	
-	public void render(GameWindow window) {// TODO doing this every frame will totally kill the performance
+	/**
+	 * Runs the renderer, to fill out the window.
+	 * TODO: Doing this every frame will totally kill the performance.
+	 * 
+	 * @param window The window, that should be filled with pixels.
+	 */
+	public void render(GameWindow window) {
 		long millis = System.currentTimeMillis();
 		
 		int windowWidth = window.getWidth();
@@ -64,6 +101,15 @@ public class TerrariaRenderer {
 		System.out.println("Render-Time: " + (System.currentTimeMillis() - millis) + "\t\t" + (1000 / window.getFps()));
 	}
 		
+	/**
+	 * Determines the points, where rendering should start.
+	 * Used to assure, that only visible blocks are calculated.
+	 * 
+	 * @param centerX The x postion of the camera.
+	 * @param centerY The y postion of the camera.
+	 * @param pixelsX The total visible pixels on the x axis.
+	 * @param pixelsY The total visible pixels on the y axis.
+	 */
 	public void determineStartingBlock(double centerX, double centerY, int pixelsX, int pixelsY) {
 		startBlockX = (int) Math.floor(centerX);
 		startBlockY = (int) Math.floor(centerY);
@@ -81,16 +127,29 @@ public class TerrariaRenderer {
 		}
 	}
 	
+	/**
+	 * How many pixels the coordinate is offset from the full (.0) block position.
+	 * Used for calculating screen locations of blocks, that are only partially visible.
+	 * 
+	 * @param exactCoordinate The decimal coordinate of the camera.
+	 * @return How many pixels it is from the .0 block position.
+	 */
 	public int getOffsetPixels(double exactCoordinate) {
 		double remains = exactCoordinate % 1;
 		double pixelSize = 1.0 / blockSize;
 		return (int) (remains / pixelSize);
 	}
 
+	/**
+	 * @return The length of a block in pixels.
+	 */
 	public int getBlockSize() {
 		return blockSize;
 	}
 
+	/**
+	 * @param blockSize The new length of a block in pixels.
+	 */
 	public void setBlockSize(int blockSize) {
 		this.blockSize = blockSize;
 	}

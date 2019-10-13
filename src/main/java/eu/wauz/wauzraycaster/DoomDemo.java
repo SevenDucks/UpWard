@@ -59,8 +59,8 @@ public class DoomDemo {
 		GameWindow game = new GameWindow(720, 480);
 		game.setFps(60);
 		game.loadMap(map);
-		game.placeCamera(2, 10);
-		game.placeEntity(2, 15);
+		game.placeDoomCamera(2, 10);
+		game.placeDoomEntity(2, 15);
 		game.setTitle("WOOM");
 		game.setBgmPath("sound/doom/d_e1m1.mid");
 		game.start();

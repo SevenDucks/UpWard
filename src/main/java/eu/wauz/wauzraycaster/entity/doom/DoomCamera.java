@@ -3,21 +3,50 @@ package eu.wauz.wauzraycaster.entity.doom;
 import java.awt.event.KeyEvent;
 
 import eu.wauz.wauzraycaster.entity.Controller;
+import eu.wauz.wauzraycaster.game.doom.DoomMap;
 import eu.wauz.wauzraycaster.util.WrayOptions;
 
+/**
+ * A camera entity, that can move across a pseudo 3D doom map.
+ * 
+ * @author Wauzmons
+ *
+ * @see DoomEntity
+ * @see DoomMap
+ */
 public class DoomCamera extends DoomEntity implements Controller {
 	
+	/**
+	 * If the entity is moving in this direction
+	 */
 	private boolean leftRotate, rightRotate, forward, backward, left, right;
 	
+	/**
+	 * Creates a new entity, with given starting position.
+	 * 
+	 * @param xPos
+	 * @param yPos
+	 * @param xDir
+	 * @param yDir
+	 * @param xPlane
+	 * @param yPlane
+	 */
 	public DoomCamera(double xPos, double yPos, double xDir, double yDir, double xPlane, double yPlane) {
 		super(xPos, yPos, xDir, yDir, xPlane, yPlane);
 	}
 	
+	/**
+	 * Determine what to do if a key is typed.
+	 */
 	@Override
 	public void keyTyped(KeyEvent key) {
 		
 	}
 	
+	/**
+	 * Determine what to do if a key is pressed.
+	 * Starts directional movement.
+	 */
 	@Override
 	public void keyPressed(KeyEvent key) {
 		if(key.getKeyCode() == WrayOptions.CONTROLS.getRotateLeft()) {
@@ -40,6 +69,10 @@ public class DoomCamera extends DoomEntity implements Controller {
 		}
 	}
 	
+	/**
+	 * Determine what to do if a key is released.
+	 * Stops directional movement.
+	 */
 	@Override
 	public void keyReleased(KeyEvent key) {
 		if(key.getKeyCode() == WrayOptions.CONTROLS.getRotateLeft()) {
@@ -62,6 +95,10 @@ public class DoomCamera extends DoomEntity implements Controller {
 		}
 	}
 	
+	
+	/**
+	 * Moves into the active directions, if possible.
+	 */
 	@Override
 	public void updatePosition(int[][] map) {
 		if(leftRotate) {

@@ -8,23 +8,49 @@ import eu.wauz.wauzraycaster.generation.CellularAutomaton;
 import eu.wauz.wauzraycaster.generation.ResourceSpawner;
 import eu.wauz.wauzraycaster.generation.VegetationSpawner;
 
+/**
+ * A map for random terraria-like world outlines.
+ * 
+ * @author Wauzmons
+ */
 public class CellularAutomatonMap extends GameMap {
 	
+	/**
+	 * The pixels for the game window.
+	 */
 	private int[] pixels;
 	
+	/**
+	 * Creates a new cellular automaton map with the size of the given map matrix.
+	 * 
+	 * @param mapMatrix The empty game map, for measurement.
+	 */
 	public CellularAutomatonMap(int[][] mapMatrix) {
 		super(mapMatrix, null, false);
 	}
 	
+	/**
+	 * Runs the renderer, to fill out the window.
+	 * 
+	 * @param window The window, that should be filled with pixels.
+	 * 
+	 * @see CellularAutomatonMap#generate()
+	 */
 	@Override
 	public void render(GameWindow window) {
-		gnerate();
+		generate();
 		for(int i = 0; i < window.getPixels().length; i++) {
 			window.getPixels()[i] = pixels[i];
 		}
 	}
 	
-	public void gnerate() {
+	/**
+	 * Creates a new cellular automaton, for a new map.
+	 * Automatically maps values to pixel colors.
+	 * 
+	 * @see CellularAutomaton
+	 */
+	public void generate() {
 		CellularAutomaton automaton = new CellularAutomaton(mapWidth, mapHeight).withTerrariaPreset();
 		
 		ResourceSpawner resourceSpawner = new ResourceSpawner(automaton);
