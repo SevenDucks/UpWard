@@ -86,10 +86,16 @@ public class TerrariaMap extends GameMap {
 		}
 	}
 
+	/**
+	 * @return The length of a block in pixels.
+	 */
 	public int getBlockSize() {
 		return renderer.getBlockSize();
 	}
 
+	/**
+	 * @param blockSize The new length of a block in pixels.
+	 */
 	public void setBlockSize(int blockSize) {
 		renderer.setBlockSize(blockSize);
 	}

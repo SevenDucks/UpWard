@@ -131,6 +131,7 @@ public class GameWindow extends JFrame implements Runnable {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBackground(Color.BLACK);
 		setLocationRelativeTo(null);
+		this.setUndecorated(true);
 		setVisible(true);
 	}
 	
