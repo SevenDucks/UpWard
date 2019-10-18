@@ -2,6 +2,7 @@ package eu.wauz.wauzraycaster.game.terraria;
 
 import eu.wauz.wauzraycaster.entity.MovingEntity;
 import eu.wauz.wauzraycaster.game.GameWindow;
+import eu.wauz.wauzraycaster.game.GameBlock;
 
 /**
  * A renderer for random terraria-like world generation.
@@ -84,8 +85,8 @@ public class TerrariaRenderer {
 				if(blockX >= map.getBlocks().length || blockY >= map.getBlocks()[0].length) {
 					continue;
 				}
-				TerrariaBlock block = map.getBlocks()[blockX][blockY];
-				block.render(pixels, pixelX, pixelY);
+				GameBlock block = map.getBlocks()[blockX][blockY];
+				block.render(pixels, pixelX, pixelY, 0);
 				blockY++;
 			}
 			blockX++;

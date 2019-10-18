@@ -8,7 +8,7 @@ import eu.wauz.wauzraycaster.game.doom.DoomMap;
  * 
  * @author Wauzmons
  *
- * @see DoomEntity
+ * @see MovingEntity
  * @see DoomMap
  */
 public abstract class DoomEntity extends MovingEntity {

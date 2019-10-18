@@ -38,6 +38,26 @@ public class GameControls {
 	 * The key bound to sideway right movements.
 	 */
 	private int moveRight = KeyEvent.VK_E;
+	
+	/**
+	 * The key bound to interactions with an object above.
+	 */
+	private int interactTop = KeyEvent.VK_UP;
+	
+	/**
+	 * The key bound to interactions with an object below.
+	 */
+	private int interactBottom = KeyEvent.VK_DOWN;
+	
+	/**
+	 * The key bound to interactions with an object to the left.
+	 */
+	private int interactLeft = KeyEvent.VK_LEFT;
+	
+	/**
+	 * The key bound to interactions with an object to the right.
+	 */
+	private int interactRight = KeyEvent.VK_RIGHT;
 
 	/**
 	 * @return The key bound to left rotations or movements.
@@ -121,6 +141,62 @@ public class GameControls {
 	 */
 	public void setMoveRight(int moveRight) {
 		this.moveRight = moveRight;
+	}
+
+	/**
+	 * @return The key bound to interactions with an object above.
+	 */
+	public int getInteractTop() {
+		return interactTop;
+	}
+
+	/**
+	 * @param interactTop The new key bound to interactions with an object above.
+	 */
+	public void setInteractTop(int interactTop) {
+		this.interactTop = interactTop;
+	}
+
+	/**
+	 * @return The key bound to interactions with an object below.
+	 */
+	public int getInteractBottom() {
+		return interactBottom;
+	}
+
+	/**
+	 * @param interactBottom The new key bound to interactions with an object below.
+	 */
+	public void setInteractBottom(int interactBottom) {
+		this.interactBottom = interactBottom;
+	}
+
+	/**
+	 * @return The key bound to interactions with an object to the left.
+	 */
+	public int getInteractLeft() {
+		return interactLeft;
+	}
+
+	/**
+	 * @param interactLeft The new key bound to interactions with an object to the left.
+	 */
+	public void setInteractLeft(int interactLeft) {
+		this.interactLeft = interactLeft;
+	}
+
+	/**
+	 * @return The key bound to interactions with an object to the right.
+	 */
+	public int getInteractRight() {
+		return interactRight;
+	}
+
+	/**
+	 * @param interactRight The new key bound to interactions with an object to the right.
+	 */
+	public void setInteractRight(int interactRight) {
+		this.interactRight = interactRight;
 	}
 
 }

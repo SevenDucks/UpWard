@@ -19,6 +19,11 @@ public class GameTexture {
 	 * The path to the texture in the resources folder.
 	 */
 	private String path;
+
+	/**
+	 * The texture as buffered image.
+	 */
+	private BufferedImage image;
 	
 	/**
 	 * The width / height of the texture in pixels.
@@ -64,7 +69,7 @@ public class GameTexture {
 	 */
 	private void loadImage() {
 		try {
-			BufferedImage image = ImageIO.read(WrayUtils.getResource(path));
+			image = ImageIO.read(WrayUtils.getResource(path));
 			int x = image.getWidth();
 			int y = image.getHeight();
 			image.getRGB(0, 0, x, y, pixels, 0, x);
@@ -74,6 +79,20 @@ public class GameTexture {
 		}
 	}
 	
+	/**
+	 * @return The texture as buffered image.
+	 */
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	/**
+	 * @param image The texture as new buffered image.
+	 */
+	public void setImage(BufferedImage image) {
+		this.image = image;
+	}
+
 	/**
 	 * @return The width / height of the texture in pixels.
 	 */

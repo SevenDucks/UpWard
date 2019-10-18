@@ -28,7 +28,7 @@ public class TerrariaCellularAutomataDemo {
 		int height = 350;
 		int[][] mapMatrix = new int[width][height];
 		CellularAutomatonMap map = new CellularAutomatonMap(mapMatrix);
-		GameWindow game = new GameWindow(width, height);
+		GameWindow game = new GameWindow(width, height, 1);
 		game.setFps(1);
 		game.loadMap(map);
 		game.setTitle("Cellular Automaton");

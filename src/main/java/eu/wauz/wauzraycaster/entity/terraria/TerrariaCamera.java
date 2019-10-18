@@ -17,7 +17,7 @@ import eu.wauz.wauzraycaster.util.WrayOptions;
 public class TerrariaCamera extends MovingEntity implements Controller {
 	
 	/**
-	 * If the entity is moving in this direction
+	 * If the entity is moving in this direction.
 	 */
 	private boolean up, down, left, right;
 

@@ -42,7 +42,7 @@ public class TerrariaDemo {
 		TerrariaMap map = new TerrariaMap(mapMatrix, tileset);
 		map.setBlockSize(16);
 		map.generate();
-		GameWindow game = new GameWindow(720, 480);
+		GameWindow game = new GameWindow(720, 480, 1);
 		game.setFps(60);
 		game.loadMap(map);
 		game.placeCamera(new TerrariaCamera(400, 120, 0, 0, 0, 0));

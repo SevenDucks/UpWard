@@ -1,7 +1,10 @@
 package eu.wauz.wauzraycaster.game;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -13,11 +16,15 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.swing.JFrame;
+import javax.swing.JRootPane;
 
 import eu.wauz.wauzraycaster.entity.Controller;
 import eu.wauz.wauzraycaster.entity.MovingEntity;
+import eu.wauz.wauzraycaster.entity.Visible;
 import eu.wauz.wauzraycaster.entity.doom.DoomCamera;
 import eu.wauz.wauzraycaster.entity.doom.DoomTestEntity;
+import eu.wauz.wauzraycaster.entity.isaac.IsaacEntity;
+import eu.wauz.wauzraycaster.util.WrayOptions;
 import eu.wauz.wauzraycaster.util.WrayUtils;
 
 /**
@@ -53,6 +60,31 @@ public class GameWindow extends JFrame implements Runnable {
 	 * The height of the game window.
 	 */
 	private int height = 480;
+	
+	/**
+	 * The scale of the window, where 1 is 100 percent.
+	 */
+	private double scale = 1;
+	
+	/**
+	 * The size of the top border.
+	 */
+	private int insetTop;
+	
+	/**
+	 * The size of the bottom border.
+	 */
+	private int insetBottom;
+	
+	/**
+	 * The size of the left border.
+	 */
+	private int insetLeft;
+	
+	/**
+	 * The size of the right border.
+	 */
+	private int insetRight;
 	
 	/**
 	 * The title of the game window.
@@ -102,12 +134,14 @@ public class GameWindow extends JFrame implements Runnable {
 	/**
 	 * Initializes a game window with given size.
 	 * 
-	 * @param width
-	 * @param height
+	 * @param width The width of the game window.
+	 * @param height The height of the game window.
+	 * @param scale The size of the window, where 1 is 100 percent.
 	 */
-	public GameWindow(int width, int height) {
+	public GameWindow(int width, int height, int scale) {
 		this.width = width;
 		this.height = height;
+		this.scale = scale;
 		initialize();
 	}
 	
@@ -122,16 +156,28 @@ public class GameWindow extends JFrame implements Runnable {
 	 * Loads the displayed image, aswell as window size, title, background and visibility.
 	 */
 	private void initialize() {
-		display = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		WrayOptions.WINDOWS.setMainWindow(this);
+		display = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		pixels = ((DataBufferInt) display.getRaster().getDataBuffer()).getData();
 		
-		setSize(width, height);
+		String iconPath = WrayUtils.getResource("images/icon.png").getAbsolutePath();
+		setIconImage(Toolkit.getDefaultToolkit().getImage(iconPath));
+		
+		if(width == 0 || height == 0) {
+			setExtendedState(JFrame.MAXIMIZED_BOTH);
+		}
+		else {
+			int containerWidth = (int) (width * scale);
+			int containerHeight = (int) (height * scale) + 28;
+			setSize(containerWidth, containerHeight);
+		}
 		setResizable(false);
 		setTitle("WauzRaycaster");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBackground(Color.BLACK);
+		setBackground(Color.PINK);
 		setLocationRelativeTo(null);
-		this.setUndecorated(true);
+		setUndecorated(true);
+		getRootPane().setWindowDecorationStyle(JRootPane.WARNING_DIALOG);
 		setVisible(true);
 	}
 	
@@ -139,6 +185,11 @@ public class GameWindow extends JFrame implements Runnable {
 	 * Starts the main thread.
 	 */
 	public synchronized void start() {
+		insetTop = getInsets().top;
+		insetBottom = getInsets().bottom;
+		insetLeft = getInsets().left;
+		insetRight = getInsets().right;
+//		setSize(width + insetLeft + insetRight, height + insetTop + insetBottom);
 		isMainThreadRunning = true;
 		mainThread.start();
 	}
@@ -195,7 +246,7 @@ public class GameWindow extends JFrame implements Runnable {
 			
 			while (delta >= 1) {
 				currentMap.render(this);
-				for(MovingEntity entity : entities) {
+				for(MovingEntity entity : new ArrayList<>(entities)) {
 					entity.updatePosition(currentMap.getMapMatrix());
 				}
 				delta--;
@@ -214,9 +265,22 @@ public class GameWindow extends JFrame implements Runnable {
 				createBufferStrategy(3);
 				return;
 			}
-			Graphics graphics = bufferStrategy.getDrawGraphics();
-			graphics.drawImage(display, 0, 0, display.getWidth(), display.getHeight(), null);
-			bufferStrategy.show();
+			do {
+				do {
+					Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
+					graphics.fillRect(0, 0, display.getWidth(), display.getHeight());
+					graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+					paint(graphics);
+					graphics.drawImage(display, insetLeft, insetTop + 28, getSize().width - insetRight, getSize().height - insetBottom, 0, 0, display.getWidth(), display.getHeight(), null);
+					for(MovingEntity entity : entities) {
+						if(entity instanceof IsaacEntity) {
+							BufferedImage image = ((IsaacEntity) entity).getTexture().getImage();
+						}
+					}
+					graphics.dispose();
+				} while(bufferStrategy.contentsRestored());
+				bufferStrategy.show();
+			} while(bufferStrategy.contentsLost());
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -278,6 +342,24 @@ public class GameWindow extends JFrame implements Runnable {
 	public void placeDoomEntity(int matrixX, int matrixY) {
 		MovingEntity entity = new DoomTestEntity(matrixY + 0.5, currentMap.getMapWidth() - (matrixX + 0.5), 1, 0, 0, -0.7);
 		entities.add(entity);
+	}
+	
+	/**
+	 * Places an entity.
+	 * 
+	 * @param entity The entity to place.
+	 */
+	public void placeEntity(MovingEntity entity) {
+		entities.add(entity);
+	}
+	
+	/**
+	 * Removes an entity.
+	 * 
+	 * @param entity The entity to remove.
+	 */
+	public void removeEntity(MovingEntity entity) {
+		entities.remove(entity);
 	}
 	
 	/**
@@ -349,6 +431,20 @@ public class GameWindow extends JFrame implements Runnable {
 	 */
 	public Controller getCurrentCamera() {
 		return currentCamera;
+	}
+
+	/**
+	 * @return All moving entities, located on the map.
+	 */
+	public List<MovingEntity> getEntities() {
+		return entities;
+	}
+
+	/**
+	 * @param All new moving entities, located on the map.
+	 */
+	public void setEntities(List<MovingEntity> entities) {
+		this.entities = entities;
 	}
 
 	/**

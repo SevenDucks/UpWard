@@ -2,6 +2,7 @@ package eu.wauz.wauzraycaster.game.terraria;
 
 import eu.wauz.wauzraycaster.game.GameMap;
 import eu.wauz.wauzraycaster.game.GameWindow;
+import eu.wauz.wauzraycaster.game.GameBlock;
 import eu.wauz.wauzraycaster.generation.CellularAutomaton;
 import eu.wauz.wauzraycaster.generation.ResourceSpawner;
 import eu.wauz.wauzraycaster.generation.VegetationSpawner;
@@ -22,7 +23,7 @@ public class TerrariaMap extends GameMap {
 	/**
 	 * The blocks, that make up the world.
 	 */
-	private TerrariaBlock[][] blocks;
+	private GameBlock[][] blocks;
 	
 	/**
 	 * Creates a new terraria map with the size of the given map matrix.
@@ -51,10 +52,10 @@ public class TerrariaMap extends GameMap {
 	 * Automatically maps values to block textures from the tileset.
 	 * 
 	 * @see CellularAutomaton
-	 * @see TerrariaBlock
+	 * @see GameBlock
 	 */
 	public void generate() {
-		blocks = new TerrariaBlock[mapWidth][mapHeight];
+		blocks = new GameBlock[mapWidth][mapHeight];
 		
 		CellularAutomaton automaton = new CellularAutomaton(mapWidth, mapHeight).withTerrariaPreset();
 		
@@ -81,7 +82,7 @@ public class TerrariaMap extends GameMap {
 			for(int y = 0; y < mapHeight; y++) {
 				int blockId = cellMatrix[x][y];
 				getMapMatrix()[x][y] = blockId;
-				blocks[x][y] = new TerrariaBlock(getTileset().get(blockId + 1), renderer.getBlockSize());
+				blocks[x][y] = new GameBlock(getTileset().get(blockId + 1), renderer.getBlockSize());
 			}
 		}
 	}
@@ -103,14 +104,14 @@ public class TerrariaMap extends GameMap {
 	/**
 	 * @return The blocks, that make up the world.
 	 */
-	public TerrariaBlock[][] getBlocks() {
+	public GameBlock[][] getBlocks() {
 		return blocks;
 	}
 
 	/**
 	 * @param blocks The new blocks, that make up the world.
 	 */
-	public void setBlocks(TerrariaBlock[][] blocks) {
+	public void setBlocks(GameBlock[][] blocks) {
 		this.blocks = blocks;
 	}
 	

@@ -56,7 +56,7 @@ public class DoomDemo {
 		tileset.add(new GameTexture(Color.BLACK, 64));
 		DoomMap map = new DoomMap(mapMatrix, tileset);
 		map.setCeilingColor(Color.ORANGE);
-		GameWindow game = new GameWindow(720, 480);
+		GameWindow game = new GameWindow(720, 480, 1);
 		game.setFps(60);
 		game.loadMap(map);
 		game.placeDoomCamera(2, 10);
