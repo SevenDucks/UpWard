@@ -16,7 +16,7 @@ public class IsaacProjectile extends IsaacEntity {
 	/**
 	 * In how many ticks, the entity will die.
 	 */
-	private int ticksTillDeath = 45;
+	private int ticksTillDeath = 30;
 	
 	/**
 	 * The entity who shot this projectile.
@@ -30,9 +30,9 @@ public class IsaacProjectile extends IsaacEntity {
 	 * @param direction The direction, where every increase is a 90 degree rotation.
 	 */
 	public IsaacProjectile(IsaacEntity shooter, int direction) {
-		super(shooter.getxPos(), shooter.getyPos());
+		super(shooter.getxPos() + 0.375, shooter.getyPos() + 0.25);
 		this.shooter = shooter;
-		MOVEMENT_SPEED = 0.09375;
+		MOVEMENT_SPEED = 0.12;
 		
 		switch (direction) {
 		case 0:

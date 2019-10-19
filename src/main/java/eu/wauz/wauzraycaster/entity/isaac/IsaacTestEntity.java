@@ -26,12 +26,12 @@ public class IsaacTestEntity extends IsaacEntity {
 	 */
 	public IsaacTestEntity(double xPos, double yPos) {
 		super(xPos, yPos);
-		MOVEMENT_SPEED = 0.0625;
+		MOVEMENT_SPEED = 0.06;
 	}
 
 	/**
 	 * Lets the entity randomly stroll around.
-	 * Changes direction every 60 ticks.
+	 * Changes direction every 30 ticks.
 	 */
 	@Override
 	public void updatePosition(int[][] map) {
@@ -40,7 +40,7 @@ public class IsaacTestEntity extends IsaacEntity {
 			down = WrayUtils.randomBoolean();
 			left = WrayUtils.randomBoolean();
 			right = WrayUtils.randomBoolean();
-			ticksTillBehaviourChange = 60;
+			ticksTillBehaviourChange = 30;
 			
 		}
 		else {

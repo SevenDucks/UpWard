@@ -1,8 +1,6 @@
 package eu.wauz.wauzraycaster.game;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
@@ -20,10 +18,8 @@ import javax.swing.JRootPane;
 
 import eu.wauz.wauzraycaster.entity.Controller;
 import eu.wauz.wauzraycaster.entity.MovingEntity;
-import eu.wauz.wauzraycaster.entity.Visible;
 import eu.wauz.wauzraycaster.entity.doom.DoomCamera;
 import eu.wauz.wauzraycaster.entity.doom.DoomTestEntity;
-import eu.wauz.wauzraycaster.entity.isaac.IsaacEntity;
 import eu.wauz.wauzraycaster.util.WrayOptions;
 import eu.wauz.wauzraycaster.util.WrayUtils;
 
@@ -157,7 +153,7 @@ public class GameWindow extends JFrame implements Runnable {
 	 */
 	private void initialize() {
 		WrayOptions.WINDOWS.setMainWindow(this);
-		display = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		display = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) display.getRaster().getDataBuffer()).getData();
 		
 		String iconPath = WrayUtils.getResource("images/icon.png").getAbsolutePath();
@@ -174,10 +170,10 @@ public class GameWindow extends JFrame implements Runnable {
 		setResizable(false);
 		setTitle("WauzRaycaster");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBackground(Color.PINK);
+		setBackground(Color.BLACK);
 		setLocationRelativeTo(null);
 		setUndecorated(true);
-		getRootPane().setWindowDecorationStyle(JRootPane.WARNING_DIALOG);
+		getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 		setVisible(true);
 	}
 	
@@ -265,22 +261,10 @@ public class GameWindow extends JFrame implements Runnable {
 				createBufferStrategy(3);
 				return;
 			}
-			do {
-				do {
-					Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
-					graphics.fillRect(0, 0, display.getWidth(), display.getHeight());
-					graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-					paint(graphics);
-					graphics.drawImage(display, insetLeft, insetTop + 28, getSize().width - insetRight, getSize().height - insetBottom, 0, 0, display.getWidth(), display.getHeight(), null);
-					for(MovingEntity entity : entities) {
-						if(entity instanceof IsaacEntity) {
-							BufferedImage image = ((IsaacEntity) entity).getTexture().getImage();
-						}
-					}
-					graphics.dispose();
-				} while(bufferStrategy.contentsRestored());
-				bufferStrategy.show();
-			} while(bufferStrategy.contentsLost());
+			Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
+			paint(graphics);
+			graphics.drawImage(display, insetLeft, insetTop + 28, getSize().width - insetRight, getSize().height - insetBottom, 0, 0, display.getWidth(), display.getHeight(), null);
+			bufferStrategy.show();
 		}
 		catch (Exception e) {
 			e.printStackTrace();

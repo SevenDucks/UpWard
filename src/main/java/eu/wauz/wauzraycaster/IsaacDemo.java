@@ -43,14 +43,17 @@ public class IsaacDemo {
 		GameWindow game = new GameWindow(416, 288, 2);
 		game.setFps(30);
 		game.loadMap(map);
+		
 		IsaacCamera camera = new IsaacCamera(6, 4);
 		camera.setTexture(new GameTexture("images/isaac/joe.png", 32));
 		camera.setShotTexture(new GameTexture(Color.CYAN, 8));
 		camera.setShotSize(0.25);
 		game.placeCamera(camera);
+		
 		IsaacTestEntity entity = new IsaacTestEntity(2, 6);
-		entity.setTexture(new GameTexture(Color.RED, 32));
+		entity.setTexture(new GameTexture("images/isaac/flungus.png", 32));
 		game.placeEntity(entity);
+		
 		game.setTitle("The Binding of Joe");
 		game.start();
 	}

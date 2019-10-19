@@ -18,6 +18,11 @@ import eu.wauz.wauzraycaster.util.WrayOptions;
 public class IsaacCamera extends IsaacEntity implements Controller {
 	
 	/**
+	 * If the entity is shooting in this direction.
+	 */
+	protected boolean shootUp, shootDown, shootLeft, shootRight;
+	
+	/**
 	 * The unix timestamp, of the last projectile, that was shot.
 	 */
 	private long lastShotTimestamp = 0;
@@ -41,7 +46,6 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 	 */
 	public IsaacCamera(double xPos, double yPos) {
 		super(xPos, yPos);
-		MOVEMENT_SPEED = 0.0625;
 	}
 
 	/**
@@ -55,7 +59,7 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 
 	/**
 	 * Determine what to do if a key is pressed.
-	 * Starts directional movement.
+	 * Starts directional movement or shooting.
 	 */
 	@Override
 	public void keyPressed(KeyEvent key) {
@@ -72,25 +76,28 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 			right = true;
 		}
 		
-		if(lastShotTimestamp + 1000 < System.currentTimeMillis()) {
-			if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractTop()) {
-				shoot(0);
-			}
-			else if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractRight()) {
-				shoot(1);
-			}
-			else if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractBottom()) {
-				shoot(2);
-			}
-			else if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractLeft()) {
-				shoot(3);
-			}
+		
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractTop()) {
+			stopShooting();
+			shootUp = true;
+		}
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractBottom()) {
+			stopShooting();
+			shootDown = true;
+		}
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractLeft()) {
+			stopShooting();
+			shootLeft = true;
+		}
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractRight()) {
+			stopShooting();
+			shootRight = true;
 		}
 	}
 
 	/**
 	 * Determine what to do if a key is released.
-	 * Stops directional movement.
+	 * Stops directional movement or shooting.
 	 */
 	@Override
 	public void keyReleased(KeyEvent key) {
@@ -106,10 +113,24 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 		else if(key.getKeyCode() == WrayOptions.CONTROLS.getRotateRight()) {
 			right = false;
 		}
+		
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractTop()) {
+			shootUp = false;
+		}
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractBottom()) {
+			shootDown = false;
+		}
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractLeft()) {
+			shootLeft = false;
+		}
+		else if(key.getKeyCode() == WrayOptions.CONTROLS.getInteractRight()) {
+			shootRight = false;
+		}
 	}
 
 	/**
 	 * Moves into the active directions, if possible.
+	 * Spawns new projectiles if currently shooting.
 	 */
 	@Override
 	public void updatePosition(int[][] map) {
@@ -125,6 +146,21 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 		if(right) {
 			moveRight(map);
 		}
+		
+		if(lastShotTimestamp + 800 < System.currentTimeMillis()) {
+			if(shootUp) {
+				shoot(0);
+			}
+			if(shootRight) {
+				shoot(1);
+			}
+			if(shootDown) {
+				shoot(2);
+			}
+			if(shootLeft) {
+				shoot(3);
+			}
+		}
 	}
 	
 	/**
@@ -137,6 +173,16 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 		projectile.setTexture(shotTexture);
 		projectile.setSize(shotSize);
 		lastShotTimestamp = System.currentTimeMillis();
+	}
+	
+	/**
+	 * Lets the entity stop shooting projectiles.
+	 */
+	private void stopShooting() {
+		shootUp = false;
+		shootDown = false;
+		shootLeft = false;
+		shootRight = false;
 	}
 
 	/**

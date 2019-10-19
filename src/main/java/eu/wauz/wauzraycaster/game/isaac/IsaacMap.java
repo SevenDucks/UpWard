@@ -71,11 +71,11 @@ public class IsaacMap extends GameMap {
 		for(int i = 0; i < pixels.length; i++) {
 			pixels[i] = staticPixels[i].clone();
 		}
-//		for(MovingEntity entity : window.getEntities()) {
-//			if(entity instanceof Visible) {
-//				((Visible) entity).render(this);
-//			}
-//		}
+		for(MovingEntity entity : window.getEntities()) {
+			if(entity instanceof Visible) {
+				((Visible) entity).render(this);
+			}
+		}
 		for(int i = 0; i < window.getPixels().length; i++) {
 			int x = i % window.getWidth();
 			int y = (int) Math.ceil(i / window.getWidth());

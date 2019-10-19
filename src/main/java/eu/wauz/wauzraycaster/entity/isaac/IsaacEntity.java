@@ -47,7 +47,7 @@ public abstract class IsaacEntity extends MovingEntity implements Visible {
 	 * @param map The map to move on.
 	 */
 	public void moveUp(int[][] map) {
-		move(map, xPos, yPos - MOVEMENT_SPEED);
+		move(map, xPos, yPos - getRegulatedMovementSpeed());
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public abstract class IsaacEntity extends MovingEntity implements Visible {
 	 * @param map The map to move on.
 	 */
 	public void moveDown(int[][] map) {
-		move(map, xPos, yPos + MOVEMENT_SPEED);
+		move(map, xPos, yPos + getRegulatedMovementSpeed());
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public abstract class IsaacEntity extends MovingEntity implements Visible {
 	 * @param map The map to move on.
 	 */
 	public void moveLeft(int[][] map) {
-		move(map, xPos - MOVEMENT_SPEED, yPos);
+		move(map, xPos - getRegulatedMovementSpeed(), yPos);
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public abstract class IsaacEntity extends MovingEntity implements Visible {
 	 * @param map The map to move on.
 	 */
 	public void moveRight(int[][] map) {
-		move(map, xPos + MOVEMENT_SPEED, yPos);
+		move(map, xPos + getRegulatedMovementSpeed(), yPos);
 	}
 	
 	/**
@@ -91,6 +91,15 @@ public abstract class IsaacEntity extends MovingEntity implements Visible {
 		if(map [(int) xPos] [(int) yPosNew] == 0 && map [(int) xPos] [(int) Math.ceil(yPosNew + size) - 1] == 0) {
 			yPos = yPosNew;
 		}
+	}
+	
+	/**
+	 * Regulates the movement speed, by reducing it, if the entity moves vertically.
+	 * 
+	 * @return The regulated movement speed.
+	 */
+	public double getRegulatedMovementSpeed() {
+		return (up || down) && (left || right) ? MOVEMENT_SPEED / 1.4142 : MOVEMENT_SPEED;
 	}
 	
 	/**
@@ -113,7 +122,7 @@ public abstract class IsaacEntity extends MovingEntity implements Visible {
 		for(int pixelY = startY; pixelY < startY + texture.getSize() && pixelY < pixels[0].length; pixelY++) {
 			for(int pixelX = startX; pixelX < startX + texture.getSize() && pixelX < pixels.length; pixelX++) {
 				pixel++;
-				if(pixelX < 0 || pixelY < 0) {
+				if(pixelX < 0 || pixelY < 0 || (texture.getPixels()[pixel] >> 24) == 0x00) {
 					continue;
 				}
 				pixels[pixelX][pixelY] = texture.getPixels()[pixel];
