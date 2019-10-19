@@ -2,8 +2,8 @@ package eu.wauz.wauzraycaster.entity.terraria;
 
 import java.awt.event.KeyEvent;
 
-import eu.wauz.wauzraycaster.entity.Controller;
 import eu.wauz.wauzraycaster.entity.MovingEntity;
+import eu.wauz.wauzraycaster.entity.interfaces.Controller;
 import eu.wauz.wauzraycaster.game.terraria.TerrariaMap;
 import eu.wauz.wauzraycaster.util.WrayOptions;
 

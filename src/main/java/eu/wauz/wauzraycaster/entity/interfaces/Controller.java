@@ -1,4 +1,4 @@
-package eu.wauz.wauzraycaster.entity;
+package eu.wauz.wauzraycaster.entity.interfaces;
 
 import java.awt.event.KeyListener;
 

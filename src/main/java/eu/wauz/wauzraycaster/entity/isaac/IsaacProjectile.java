@@ -1,5 +1,6 @@
 package eu.wauz.wauzraycaster.entity.isaac;
 
+import eu.wauz.wauzraycaster.entity.interfaces.Collidable;
 import eu.wauz.wauzraycaster.game.isaac.IsaacMap;
 import eu.wauz.wauzraycaster.util.WrayOptions;
 
@@ -78,6 +79,18 @@ public class IsaacProjectile extends IsaacEntity {
 		}
 		if(right) {
 			moveRight(map);
+		}
+	}
+	
+	/**
+	 * Called when the entity collides with another.
+	 * 
+	 * @param entity The other entity.
+	 */
+	@Override
+	public void collide(Collidable entity) {
+		if(!shooter.equals(entity)) {
+			WrayOptions.WINDOWS.getMainWindow().removeEntity(this);
 		}
 	}
 

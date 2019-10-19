@@ -3,7 +3,7 @@ package eu.wauz.wauzraycaster.game.isaac;
 import eu.wauz.wauzraycaster.game.GameMap;
 import eu.wauz.wauzraycaster.game.GameWindow;
 import eu.wauz.wauzraycaster.entity.MovingEntity;
-import eu.wauz.wauzraycaster.entity.Visible;
+import eu.wauz.wauzraycaster.entity.interfaces.Visible;
 import eu.wauz.wauzraycaster.game.GameBlock;
 import eu.wauz.wauzraycaster.textures.GameTileset;
 
@@ -57,8 +57,6 @@ public class IsaacMap extends GameMap {
 	 */
 	@Override
 	public void render(GameWindow window) {
-		long millis = System.currentTimeMillis();
-		
 		if(staticPixels == null) {
 			staticPixels = new int[window.getWidth()][window.getHeight()];
 			pixels = new int[window.getWidth()][window.getHeight()];
@@ -81,8 +79,6 @@ public class IsaacMap extends GameMap {
 			int y = (int) Math.ceil(i / window.getWidth());
 			window.getPixels()[i] = pixels[x][y];
 		}
-		
-		System.out.println("Render-Time: " + (System.currentTimeMillis() - millis) + "\t\t" + (1000 / window.getFps()));
 	}
 	
 	public void renderFloor() {

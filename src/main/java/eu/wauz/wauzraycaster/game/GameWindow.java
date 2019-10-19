@@ -16,10 +16,10 @@ import javax.sound.sampled.FloatControl;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
 
-import eu.wauz.wauzraycaster.entity.Controller;
 import eu.wauz.wauzraycaster.entity.MovingEntity;
 import eu.wauz.wauzraycaster.entity.doom.DoomCamera;
 import eu.wauz.wauzraycaster.entity.doom.DoomTestEntity;
+import eu.wauz.wauzraycaster.entity.interfaces.Controller;
 import eu.wauz.wauzraycaster.util.WrayOptions;
 import eu.wauz.wauzraycaster.util.WrayUtils;
 
@@ -241,11 +241,15 @@ public class GameWindow extends JFrame implements Runnable {
 			lastRun = thisRun;
 			
 			while (delta >= 1) {
+				long millis = System.currentTimeMillis();
+				
 				currentMap.render(this);
 				for(MovingEntity entity : new ArrayList<>(entities)) {
 					entity.updatePosition(currentMap.getMapMatrix());
 				}
 				delta--;
+				
+				System.out.println("Render-Time: " + (System.currentTimeMillis() - millis) + "\t\t" + (1000 / fps));
 			}
 			render();
 		}

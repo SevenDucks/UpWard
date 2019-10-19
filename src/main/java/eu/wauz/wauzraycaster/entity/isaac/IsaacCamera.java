@@ -2,7 +2,7 @@ package eu.wauz.wauzraycaster.entity.isaac;
 
 import java.awt.event.KeyEvent;
 
-import eu.wauz.wauzraycaster.entity.Controller;
+import eu.wauz.wauzraycaster.entity.interfaces.Controller;
 import eu.wauz.wauzraycaster.game.isaac.IsaacMap;
 import eu.wauz.wauzraycaster.textures.GameTexture;
 import eu.wauz.wauzraycaster.util.WrayOptions;

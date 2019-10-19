@@ -1,7 +1,9 @@
 package eu.wauz.wauzraycaster.entity.isaac;
 
+import eu.wauz.wauzraycaster.entity.Hitbox;
 import eu.wauz.wauzraycaster.entity.MovingEntity;
-import eu.wauz.wauzraycaster.entity.Visible;
+import eu.wauz.wauzraycaster.entity.interfaces.Collidable;
+import eu.wauz.wauzraycaster.entity.interfaces.Visible;
 import eu.wauz.wauzraycaster.game.GameMap;
 import eu.wauz.wauzraycaster.game.isaac.IsaacMap;
 import eu.wauz.wauzraycaster.textures.GameTexture;
@@ -14,7 +16,7 @@ import eu.wauz.wauzraycaster.textures.GameTexture;
  * @see MovingEntity
  * @see IsaacMap
  */
-public abstract class IsaacEntity extends MovingEntity implements Visible {
+public abstract class IsaacEntity extends MovingEntity implements Visible, Collidable {
 	
 	/**
 	 * If the entity is moving in this direction.
@@ -25,6 +27,11 @@ public abstract class IsaacEntity extends MovingEntity implements Visible {
 	 * The size of the entity's hitbox in blocks.
 	 */
 	private double size = 1;
+	
+	/**
+	 * The entity's current hitbox.
+	 */
+	private Hitbox hitbox;
 	
 	/**
 	 * The appearance of this entity.
@@ -39,6 +46,7 @@ public abstract class IsaacEntity extends MovingEntity implements Visible {
 	 */
 	public IsaacEntity(double xPos, double yPos) {
 		super(xPos, yPos, 0, 0, 0, 0);
+		hitbox = new Hitbox(xPos, yPos, size, size);
 	}
 
 	/**
@@ -88,9 +96,17 @@ public abstract class IsaacEntity extends MovingEntity implements Visible {
 		if(map [(int) xPosNew] [(int) yPos] == 0 && map [(int) Math.ceil(xPosNew + size) - 1] [(int) yPos] == 0) {
 			xPos = xPosNew;
 		}
+		else {
+			collide(null);
+		}
 		if(map [(int) xPos] [(int) yPosNew] == 0 && map [(int) xPos] [(int) Math.ceil(yPosNew + size) - 1] == 0) {
 			yPos = yPosNew;
 		}
+		else {
+			collide(null);
+		}
+		hitbox.resize(xPos, yPos, size, size);
+		hitbox.checkForCollisions(this);
 	}
 	
 	/**
@@ -145,6 +161,16 @@ public abstract class IsaacEntity extends MovingEntity implements Visible {
 		int offsetPixels = (int) (remains / pixelSize);
 		return startingPixel + offsetPixels;
 	}
+	
+	/**
+	 * Called when the entity collides with another.
+	 * 
+	 * @param entity The other entity.
+	 */
+	@Override
+	public void collide(Collidable entity) {
+		
+	}
 
 	/**
 	 * @return The size of the entity's hitbox in blocks.
@@ -158,6 +184,21 @@ public abstract class IsaacEntity extends MovingEntity implements Visible {
 	 */
 	public void setSize(double size) {
 		this.size = size;
+	}
+	
+	/**
+	 * @return The entity's current hitbox.
+	 */
+	@Override
+	public Hitbox getHitbox() {
+		return hitbox;
+	}
+
+	/**
+	 * @param hitbox The entity's new hitbox.
+	 */
+	public void setHitbox(Hitbox hitbox) {
+		this.hitbox = hitbox;
 	}
 
 	/**

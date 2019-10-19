@@ -2,7 +2,7 @@ package eu.wauz.wauzraycaster.entity.doom;
 
 import java.awt.event.KeyEvent;
 
-import eu.wauz.wauzraycaster.entity.Controller;
+import eu.wauz.wauzraycaster.entity.interfaces.Controller;
 import eu.wauz.wauzraycaster.game.doom.DoomMap;
 import eu.wauz.wauzraycaster.util.WrayOptions;
 

@@ -1,4 +1,4 @@
-package eu.wauz.wauzraycaster.entity;
+package eu.wauz.wauzraycaster.entity.interfaces;
 
 import eu.wauz.wauzraycaster.game.GameMap;
 
@@ -9,6 +9,11 @@ import eu.wauz.wauzraycaster.game.GameMap;
  */
 public interface Visible {
 	
+	/**
+	 * Runs the renderer, to place the entity in the window.
+	 * 
+	 * @param window The game map, where the entity is located.
+	 */
 	public void render(GameMap map);
 
 }

@@ -62,8 +62,6 @@ public class TerrariaRenderer {
 	 * @param window The window, that should be filled with pixels.
 	 */
 	public void render(GameWindow window) {
-		long millis = System.currentTimeMillis();
-		
 		int windowWidth = window.getWidth();
 		int windowHeight = window.getHeight();
 		pixels = new int[windowWidth][windowHeight];
@@ -98,8 +96,6 @@ public class TerrariaRenderer {
 			int y = (int) Math.ceil(i / windowWidth);
 			window.getPixels()[i] = this.pixels[x][y];
 		}
-		
-		System.out.println("Render-Time: " + (System.currentTimeMillis() - millis) + "\t\t" + (1000 / window.getFps()));
 	}
 		
 	/**
