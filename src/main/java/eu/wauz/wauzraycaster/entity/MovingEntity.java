@@ -1,5 +1,10 @@
 package eu.wauz.wauzraycaster.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import eu.wauz.wauzraycaster.gui.GuiElement;
+
 /**
  * An entity with a changeable position on a map.
  * 
@@ -13,14 +18,19 @@ public abstract class MovingEntity {
 	protected double xPos, yPos, xDir, yDir, xPlane, yPlane;
 	
 	/**
+	 * Graphical User Interfaces bound to this entity.
+	 */
+	protected List<GuiElement> guiElements = new ArrayList<>();
+	
+	/**
 	 * The movement speed in tiles per frame.
 	 */
-	protected double MOVEMENT_SPEED = 0.08;
+	protected double movementSpeed = 0.08;
 	
 	/**
 	 * The rotation speed in tiles per frame.
 	 */
-	protected double ROTATION_SPEED = 0.04;
+	protected double rotationSpeed = 0.04;
 	
 	/**
 	 * Creates a new entity, with given starting position.
@@ -39,6 +49,17 @@ public abstract class MovingEntity {
 		this.yDir = yDir;
 		this.xPlane = xPlane;
 		this.yPlane = yPlane;
+	}
+	
+	/**
+	 * Draws all gui elements onto the given pixel array.
+	 * 
+	 * @param pixels
+	 */
+	public void drawGui(int[][] pixels) {
+		for(GuiElement gui : guiElements) {
+			gui.render(pixels);
+		}
 	}
 	
 	/**
@@ -131,6 +152,34 @@ public abstract class MovingEntity {
 	 */
 	public void setyPlane(double yPlane) {
 		this.yPlane = yPlane;
+	}
+
+	/**
+	 * @return The movement speed in tiles per frame.
+	 */
+	public double getMovementSpeed() {
+		return movementSpeed;
+	}
+
+	/**
+	 * @param movementSpeed The new movement speed in tiles per frame.
+	 */
+	public void setMovementSpeed(double movementSpeed) {
+		this.movementSpeed = movementSpeed;
+	}
+
+	/**
+	 * @return The rotation speed in tiles per frame.
+	 */
+	public double getRotationSpeed() {
+		return rotationSpeed;
+	}
+
+	/**
+	 * @param rotationSpeed The new rotation speed in tiles per frame.
+	 */
+	public void setRotationSpeed(double rotationSpeed) {
+		this.rotationSpeed = rotationSpeed;
 	}
 
 }

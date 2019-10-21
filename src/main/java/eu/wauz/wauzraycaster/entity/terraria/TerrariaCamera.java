@@ -33,7 +33,7 @@ public class TerrariaCamera extends MovingEntity implements Controller {
 	 */
 	public TerrariaCamera(double xPos, double yPos, double xDir, double yDir, double xPlane, double yPlane) {
 		super(xPos, yPos, xDir, yDir, xPlane, yPlane);
-		MOVEMENT_SPEED = 0.25;
+		movementSpeed = 0.25;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class TerrariaCamera extends MovingEntity implements Controller {
 	 * @param map The map to move on.
 	 */
 	public void moveUp(int[][] map) {
-		yPos -= MOVEMENT_SPEED;
+		yPos -= movementSpeed;
 	}
 	
 	/**
@@ -118,7 +118,7 @@ public class TerrariaCamera extends MovingEntity implements Controller {
 	 * @param map The map to move on.
 	 */
 	public void moveDown(int[][] map) {
-		yPos += MOVEMENT_SPEED;
+		yPos += movementSpeed;
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class TerrariaCamera extends MovingEntity implements Controller {
 	 * @param map The map to move on.
 	 */
 	public void moveLeft(int[][] map) {
-		xPos -= MOVEMENT_SPEED;
+		xPos -= movementSpeed;
 	}
 	
 	/**
@@ -136,7 +136,7 @@ public class TerrariaCamera extends MovingEntity implements Controller {
 	 * @param map The map to move on.
 	 */
 	public void moveRight(int[][] map) {
-		xPos += MOVEMENT_SPEED;
+		xPos += movementSpeed;
 	}
 
 }

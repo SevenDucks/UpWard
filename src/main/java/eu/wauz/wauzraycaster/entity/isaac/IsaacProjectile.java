@@ -13,11 +13,6 @@ import eu.wauz.wauzraycaster.util.WrayOptions;
  * @see IsaacMap
  */
 public class IsaacProjectile extends IsaacEntity {
-
-	/**
-	 * In how many ticks, the entity will die.
-	 */
-	private int ticksTillDeath = 30;
 	
 	/**
 	 * The entity who shot this projectile.
@@ -25,15 +20,21 @@ public class IsaacProjectile extends IsaacEntity {
 	private IsaacEntity shooter;
 	
 	/**
+	 * In how many ticks, the entity will die.
+	 */
+	private int ticksTillDeath = 30;
+	
+	/**
 	 * Creates a new projectile, with given starting position.
 	 * 
 	 * @param shooter The entity who shot this projectile
 	 * @param direction The direction, where every increase is a 90 degree rotation.
 	 */
-	public IsaacProjectile(IsaacEntity shooter, int direction) {
+	public IsaacProjectile(IsaacEntity shooter, int direction, int faction) {
 		super(shooter.getxPos() + 0.375, shooter.getyPos() + 0.25);
 		this.shooter = shooter;
-		MOVEMENT_SPEED = 0.12;
+		setFaction(faction);
+		setMovementSpeed(0.14);
 		
 		switch (direction) {
 		case 0:
@@ -89,7 +90,7 @@ public class IsaacProjectile extends IsaacEntity {
 	 */
 	@Override
 	public void collide(Collidable entity) {
-		if(!shooter.equals(entity)) {
+		if(entity == null || getFaction() < entity.getFaction()) {
 			WrayOptions.WINDOWS.getMainWindow().removeEntity(this);
 		}
 	}
@@ -106,6 +107,20 @@ public class IsaacProjectile extends IsaacEntity {
 	 */
 	public void setShooter(IsaacEntity shooter) {
 		this.shooter = shooter;
+	}
+
+	/**
+	 * @return In how many ticks, the entity will die.
+	 */
+	public int getTicksTillDeath() {
+		return ticksTillDeath;
+	}
+
+	/**
+	 * @param ticksTillDeath In how many ticks, the entity will die.
+	 */
+	public void setTicksTillDeath(int ticksTillDeath) {
+		this.ticksTillDeath = ticksTillDeath;
 	}
 
 }

@@ -3,6 +3,9 @@ package eu.wauz.wauzraycaster.textures;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -34,6 +37,16 @@ public class GameTexture {
 	 * The rgb pixels of the texture.
 	 */
 	private final int[] pixels;
+	
+	/**
+	 * The chance that an alternative variant of this texture is chosen.
+	 */
+	private double alternativeChance = 0.2;
+	
+	/**
+	 * Alternative variants of this texture.
+	 */
+	private final List<GameTexture> alternativeTextures = new ArrayList<>();
 	
 	/**
 	 * Creates a texture from a file in the resources folder.
@@ -80,6 +93,27 @@ public class GameTexture {
 	}
 	
 	/**
+	 * Runs the renderer, to place the texture in the window.
+	 * 
+	 * @param pixels The pixels to put the texture in.
+	 * @param startX The x coordinate that should be started on.
+	 * @param startY The y coordinate that should be started on.
+	 */
+	public void render(int[][] pixels, int startX, int startY) {
+		int[] texturePixels = getPixels();
+		int pixel = -1;
+		for(int pixelY = startY; pixelY < startY + size && pixelY < pixels[0].length; pixelY++) {
+			for(int pixelX = startX; pixelX < startX + size && pixelX < pixels.length; pixelX++) {
+				pixel++;
+				if(pixelX < 0 || pixelY < 0 || (texturePixels[pixel] >> 24) == 0x00) {
+					continue;
+				}
+				pixels[pixelX][pixelY] = texturePixels[pixel];
+			}
+		}
+	}
+	
+	/**
 	 * @return The texture as buffered image.
 	 */
 	public BufferedImage getImage() {
@@ -101,10 +135,37 @@ public class GameTexture {
 	}
 
 	/**
-	 * @return The rgb pixels of the texture.
+	 * @return The rgb pixels of the texture or an alternative version.
 	 */
 	public int[] getPixels() {
-		return pixels;
+		if(!alternativeTextures.isEmpty() && WrayUtils.randomBoolean(alternativeChance)) {
+			int randomIndex = WrayUtils.randomInt(alternativeTextures.size());
+			return alternativeTextures.get(randomIndex).getPixels();
+		}
+		else {
+			return pixels;
+		}
+	}
+	
+	/**
+	 * @return The chance that an alternative variant of this texture is chosen.
+	 */
+	public double getAlternativeChance() {
+		return alternativeChance;
+	}
+	
+	/**
+	 * @param alternativeChance The new chance that an alternative variant of this texture is chosen.
+	 */
+	public void setAlternativeChance(double alternativeChance) {
+		this.alternativeChance = alternativeChance;
+	}
+	
+	/**
+	 * @param alternativeTextures Alternative variants of this texture.
+	 */
+	public void addAlternatives(GameTexture... alternativeTextures) {
+		this.alternativeTextures.addAll(Arrays.asList(alternativeTextures));
 	}
 	
 }

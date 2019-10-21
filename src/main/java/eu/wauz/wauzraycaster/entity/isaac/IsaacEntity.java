@@ -24,6 +24,11 @@ public abstract class IsaacEntity extends MovingEntity implements Visible, Colli
 	protected boolean up, down, left, right;
 	
 	/**
+	 * The faction (player, enemy) id that this entity belongs to.
+	 */
+	protected int faction = 0;
+	
+	/**
 	 * The size of the entity's hitbox in blocks.
 	 */
 	private double size = 1;
@@ -115,7 +120,7 @@ public abstract class IsaacEntity extends MovingEntity implements Visible, Colli
 	 * @return The regulated movement speed.
 	 */
 	public double getRegulatedMovementSpeed() {
-		return (up || down) && (left || right) ? MOVEMENT_SPEED / 1.4142 : MOVEMENT_SPEED;
+		return (up || down) && (left || right) ? movementSpeed / 1.4142 : movementSpeed;
 	}
 	
 	/**
@@ -133,17 +138,8 @@ public abstract class IsaacEntity extends MovingEntity implements Visible, Colli
 		int blockSize = isaacMap.getBlockSize();
 		int startX = getStartingPixel(xPos, blockSize);
 		int startY = getStartingPixel(yPos, blockSize);
-		
-		int pixel = -1;
-		for(int pixelY = startY; pixelY < startY + texture.getSize() && pixelY < pixels[0].length; pixelY++) {
-			for(int pixelX = startX; pixelX < startX + texture.getSize() && pixelX < pixels.length; pixelX++) {
-				pixel++;
-				if(pixelX < 0 || pixelY < 0 || (texture.getPixels()[pixel] >> 24) == 0x00) {
-					continue;
-				}
-				pixels[pixelX][pixelY] = texture.getPixels()[pixel];
-			}
-		}
+		texture.render(pixels, startX, startY);
+		drawGui(pixels);
 	}
 	
 	/**
@@ -215,4 +211,19 @@ public abstract class IsaacEntity extends MovingEntity implements Visible, Colli
 		this.texture = texture;
 	}
 
+	/**
+	 * The faction (player, enemy) id that this entity belongs to.
+	 */
+	@Override
+	public int getFaction() {
+		return faction;
+	}
+
+	/**
+	 * @param faction The new faction (player, enemy) id that this entity belongs to.
+	 */
+	public void setFaction(int faction) {
+		this.faction = faction;
+	}
+	
 }

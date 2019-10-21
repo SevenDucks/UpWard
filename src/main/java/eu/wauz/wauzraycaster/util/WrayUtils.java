@@ -57,5 +57,23 @@ public class WrayUtils {
 	public static boolean randomBoolean() {
 		return random.nextBoolean();
 	}
-
+	
+	/**
+	 * @param chance The chance for true between 0 and 1.
+	 * 
+	 * @return A random boolean.
+	 */
+	public static boolean randomBoolean(double chance) {
+		return random.nextDouble() < chance;
+	}
+	
+	/**
+	 * @param bound The exclusive maximum value.
+	 * 
+	 * @return A random integer.
+	 */
+	public static int randomInt(int bound) {
+		return random.nextInt(bound);
+	}
+	
 }

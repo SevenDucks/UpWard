@@ -55,6 +55,7 @@ public class Hitbox {
 			Collidable collidable = ((Collidable) otherEntity);
 			if(!collidable.equals(entity) && collidable.getHitbox().intersects(this)) {
 				entity.collide(collidable);
+				collidable.collide(entity);
 			}
 		}
 	}

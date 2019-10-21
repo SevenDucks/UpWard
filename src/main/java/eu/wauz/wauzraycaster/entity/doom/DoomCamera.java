@@ -102,10 +102,10 @@ public class DoomCamera extends DoomEntity implements Controller {
 	@Override
 	public void updatePosition(int[][] map) {
 		if(leftRotate) {
-			rotate(ROTATION_SPEED);
+			rotate(rotationSpeed);
 		}
 		if(rightRotate) {
-			rotate(- ROTATION_SPEED);
+			rotate(- rotationSpeed);
 		}
 		if(forward) {
 			moveForward(map);

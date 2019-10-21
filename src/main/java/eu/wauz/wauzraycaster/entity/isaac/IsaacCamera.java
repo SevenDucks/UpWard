@@ -2,8 +2,11 @@ package eu.wauz.wauzraycaster.entity.isaac;
 
 import java.awt.event.KeyEvent;
 
+import eu.wauz.wauzraycaster.entity.interfaces.Collidable;
 import eu.wauz.wauzraycaster.entity.interfaces.Controller;
+import eu.wauz.wauzraycaster.entity.interfaces.Damageable;
 import eu.wauz.wauzraycaster.game.isaac.IsaacMap;
+import eu.wauz.wauzraycaster.gui.HitpointHearts;
 import eu.wauz.wauzraycaster.textures.GameTexture;
 import eu.wauz.wauzraycaster.util.WrayOptions;
 
@@ -15,17 +18,12 @@ import eu.wauz.wauzraycaster.util.WrayOptions;
  * @see IsaacEntity
  * @see IsaacMap
  */
-public class IsaacCamera extends IsaacEntity implements Controller {
+public class IsaacCamera extends IsaacEntity implements Controller, Damageable {
 	
 	/**
 	 * If the entity is shooting in this direction.
 	 */
 	protected boolean shootUp, shootDown, shootLeft, shootRight;
-	
-	/**
-	 * The unix timestamp, of the last projectile, that was shot.
-	 */
-	private long lastShotTimestamp = 0;
 	
 	/**
 	 * The size of this entity's shot hitbox in blocks.
@@ -37,6 +35,25 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 	 */
 	private GameTexture shotTexture;
 
+	/**
+	 * How much life the entity currently has.
+	 */
+	private int hitpoints = 3;
+	
+	/**
+	 * How much life the entity can maximally have.
+	 */
+	private int maxHitpoints = 3;
+	
+	/**
+	 * The amount of ticks, till the next hit is possible.
+	 */
+	private int hitCooldownTicks = 0;
+
+	/**
+	 * The amount of ticks, till the next projectile can be shot.
+	 */
+	private int nextShotTicks = 0;
 	
 	/**
 	 * Creates a new entity, with given starting position.
@@ -46,6 +63,9 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 	 */
 	public IsaacCamera(double xPos, double yPos) {
 		super(xPos, yPos);
+		guiElements.add(new HitpointHearts(this, 6, 6, 4));
+		setFaction(10);
+		setMovementSpeed(0.1);
 	}
 
 	/**
@@ -147,7 +167,7 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 			moveRight(map);
 		}
 		
-		if(lastShotTimestamp + 800 < System.currentTimeMillis()) {
+		if(nextShotTicks == 0) {
 			if(shootUp) {
 				shoot(0);
 			}
@@ -161,6 +181,13 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 				shoot(3);
 			}
 		}
+		
+		if(hitCooldownTicks > 0) {
+			hitCooldownTicks--;
+		}
+		if(nextShotTicks > 0) {
+			nextShotTicks--;
+		}
 	}
 	
 	/**
@@ -169,10 +196,10 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 	 * @param direction The direction, where every increase is a 90 degree rotation.
 	 */
 	public void shoot(int direction) {
-		IsaacProjectile projectile = new IsaacProjectile(this, direction);
+		IsaacProjectile projectile = new IsaacProjectile(this, direction, 11);
 		projectile.setTexture(shotTexture);
 		projectile.setSize(shotSize);
-		lastShotTimestamp = System.currentTimeMillis();
+		nextShotTicks = 25;
 	}
 	
 	/**
@@ -213,4 +240,86 @@ public class IsaacCamera extends IsaacEntity implements Controller {
 		this.shotTexture = shotTexture;
 	}
 
+	/**
+	 * @return How much life the entity currently has.
+	 */
+	@Override
+	public int getHitpoints() {
+		return hitpoints;
+	}
+
+	/**
+	 * @param hitpoints How much life the entity has now.
+	 */
+	@Override
+	public void setHitpoints(int hitpoints) {
+		this.hitpoints = hitpoints;
+	}
+
+	/**
+	 * @return How much life the entity can maximally have.
+	 */
+	@Override
+	public int getMaximumHitpoints() {
+		return maxHitpoints;
+	}
+
+	/**
+	 * @param maxHitpoints How much life the entity can maximally have now.
+	 */
+	@Override
+	public void setMaxHitpoints(int maxHitpoints) {
+		this.maxHitpoints = maxHitpoints;
+	}
+
+	/**
+	 * Called if the entity runs out of hitpoints.
+	 * 
+	 * @see Damageable#changeHitpoints(int)
+	 */
+	@Override
+	public void die() {
+		WrayOptions.WINDOWS.getMainWindow().removeEntity(this);
+	}
+	
+	/**
+	 * @return The default amount of hit cooldown ticks that will be set.
+	 */
+	@Override
+	public int getInvincibilityTicks() {
+		return 30;
+	}
+
+	/**
+	 * @return The amount of ticks, till the next hit is possible.
+	 * 
+	 * @see Damageable#changeHitpoints(int) Automatically set on hitpoint change.
+	 */
+	@Override
+	public int getHitCooldownTicks() {
+		return hitCooldownTicks;
+	}
+
+	/**
+	 * @param hitCooldownTicks The new amount of ticks, till the next hit is possible.
+	 * 
+	 * @see Damageable#changeHitpoints(int) Automatically set on hitpoint change.
+	 */
+	@Override
+	public void setHitCooldownTicks(int hitCooldownTicks) {
+		this.hitCooldownTicks = hitCooldownTicks;
+	}
+
+	/**
+	 * Called when the entity collides with another.
+	 * 
+	 * @param entity The other entity.
+	 */
+	@Override
+	public void collide(Collidable entity) {
+		if(entity != null && entity.getFaction() == 60) {
+			changeHitpoints(-1);
+		}
+	}
+	
 }

@@ -33,8 +33,8 @@ public abstract class DoomEntity extends MovingEntity {
 	 * @param map The map to move on.
 	 */
 	public void moveForward(int[][] map) {
-		double forwardX = xPos + xDir * MOVEMENT_SPEED;
-		double forwardY = yPos + yDir * MOVEMENT_SPEED;
+		double forwardX = xPos + xDir * movementSpeed;
+		double forwardY = yPos + yDir * movementSpeed;
 		move(map, forwardX, forwardY);
 	}
 	
@@ -44,8 +44,8 @@ public abstract class DoomEntity extends MovingEntity {
 	 * @param map The map to move on.
 	 */
 	public void moveBackward(int[][] map) {
-		double backwardX = xPos - xDir * MOVEMENT_SPEED;
-		double backwardY = yPos - yDir * MOVEMENT_SPEED;
+		double backwardX = xPos - xDir * movementSpeed;
+		double backwardY = yPos - yDir * movementSpeed;
 		move(map, backwardX, backwardY);
 	}
 	
@@ -74,8 +74,8 @@ public abstract class DoomEntity extends MovingEntity {
 	 * @param rotation Which direction to move in.
 	 */
 	public void moveSideways(int[][] map, double rotation) {
-		double sidewayX = xPos + getRotationDir(rotation, xDir, yDir, false) * MOVEMENT_SPEED;
-		double sidewayY = yPos + getRotationDir(rotation, xDir, yDir, true) * MOVEMENT_SPEED;
+		double sidewayX = xPos + getRotationDir(rotation, xDir, yDir, false) * movementSpeed;
+		double sidewayY = yPos + getRotationDir(rotation, xDir, yDir, true) * movementSpeed;
 		move(map, sidewayX, sidewayY);
 	}
 	

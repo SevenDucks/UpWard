@@ -36,7 +36,7 @@ public class DoomTestEntity extends DoomEntity {
 			moveForward(map);
 		}
 		if(true) {
-			rotate(ROTATION_SPEED);
+			rotate(rotationSpeed);
 		}
 	}
 

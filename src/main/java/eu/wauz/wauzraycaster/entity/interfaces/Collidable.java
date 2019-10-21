@@ -20,5 +20,10 @@ public interface Collidable {
 	 * @return The entity's current hitbox.
 	 */
 	public Hitbox getHitbox();
+	
+	/**
+	 * @return The faction (player, enemy) id that this entity belongs to.
+	 */
+	public int getFaction();
 
 }

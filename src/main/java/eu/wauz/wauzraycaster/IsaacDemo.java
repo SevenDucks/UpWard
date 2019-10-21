@@ -33,11 +33,16 @@ public class IsaacDemo {
 	public static void main(String[] args) {
 		int[][] mapMatrix = new int[13][9];
 		GameTileset tileset = new GameTileset();
-		tileset.add(new GameTexture("images/isaac/floor.png", 32));
+		
+		GameTexture floorTexture = new GameTexture("images/isaac/floor.png", 32);
+		floorTexture.addAlternatives(new GameTexture(Color.RED.darker().darker(), 32));
+		tileset.add(floorTexture);
+		
 		tileset.add(new GameTexture("images/isaac/wall.png", 32));
 		tileset.add(new GameTexture("images/isaac/corner.png", 32));
 		tileset.add(new GameTexture("images/isaac/door_closed.png", 32));
 		tileset.add(new GameTexture("images/isaac/door_opened.png", 32));
+		
 		IsaacMap map = new IsaacMap(mapMatrix, tileset);
 		map.setBlockSize(32);
 		GameWindow game = new GameWindow(416, 288, 2);
@@ -53,6 +58,10 @@ public class IsaacDemo {
 		IsaacTestEntity entity = new IsaacTestEntity(2, 6);
 		entity.setTexture(new GameTexture("images/isaac/flungus.png", 32));
 		game.placeEntity(entity);
+		
+		IsaacTestEntity entity2 = new IsaacTestEntity(10, 2);
+		entity2.setTexture(new GameTexture("images/isaac/flungus.png", 32));
+		game.placeEntity(entity2);
 		
 		game.setTitle("The Binding of Joe");
 		game.start();
