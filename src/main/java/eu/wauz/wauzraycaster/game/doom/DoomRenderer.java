@@ -75,8 +75,8 @@ public class DoomRenderer {
 		
 		DoomCamera camera = (DoomCamera) window.getCurrentCamera();
 		pixels = window.getPixels();
-		windowWidth = window.getWidth();
-		windowHeight = window.getHeight();
+		windowWidth = window.getGameWidth();
+		windowHeight = window.getGameHeight();
 		int[][] mapMatrix = map.getMapMatrix();
 		
 		paintFloorAndCeiling();

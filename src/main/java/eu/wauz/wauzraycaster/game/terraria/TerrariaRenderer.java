@@ -62,8 +62,8 @@ public class TerrariaRenderer {
 	 * @param window The window, that should be filled with pixels.
 	 */
 	public void render(GameWindow window) {
-		int windowWidth = window.getWidth();
-		int windowHeight = window.getHeight();
+		int windowWidth = window.getGameWidth();
+		int windowHeight = window.getGameHeight();
 		pixels = new int[windowWidth][windowHeight];
 		
 		if(!(window.getCurrentCamera() instanceof MovingEntity)) {

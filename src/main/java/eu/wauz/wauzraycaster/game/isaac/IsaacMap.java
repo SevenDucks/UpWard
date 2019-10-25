@@ -58,8 +58,8 @@ public class IsaacMap extends GameMap {
 	@Override
 	public void render(GameWindow window) {
 		if(staticPixels == null) {
-			staticPixels = new int[window.getWidth()][window.getHeight()];
-			pixels = new int[window.getWidth()][window.getHeight()];
+			staticPixels = new int[window.getGameWidth()][window.getGameHeight()];
+			pixels = new int[window.getGameWidth()][window.getGameHeight()];
 			
 			renderWalls();
 			renderFloor();
@@ -75,8 +75,8 @@ public class IsaacMap extends GameMap {
 			}
 		}
 		for(int i = 0; i < window.getPixels().length; i++) {
-			int x = i % window.getWidth();
-			int y = (int) Math.ceil(i / window.getWidth());
+			int x = i % window.getGameWidth();
+			int y = (int) Math.ceil(i / window.getGameWidth());
 			window.getPixels()[i] = pixels[x][y];
 		}
 	}

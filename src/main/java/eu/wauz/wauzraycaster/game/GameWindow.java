@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.swing.JFrame;
-import javax.swing.JRootPane;
 
 import eu.wauz.wauzraycaster.entity.MovingEntity;
 import eu.wauz.wauzraycaster.entity.doom.DoomCamera;
@@ -100,7 +100,7 @@ public class GameWindow extends JFrame implements Runnable {
 	/**
 	 * The targeted frames per second.
 	 */
-	private int fps = 30;
+	private double fps = 30;
 	
 	/**
 	 * The current game map.
@@ -126,6 +126,11 @@ public class GameWindow extends JFrame implements Runnable {
 	 * The path of the background music resource.
 	 */
 	private String bgmPath;
+	
+	/**
+	 * A formatter for making log friendly numbers. 
+	 */
+	private static DecimalFormat formatter = new DecimalFormat("#,#00.000");
 	
 	/**
 	 * Initializes a game window with given size.
@@ -164,16 +169,13 @@ public class GameWindow extends JFrame implements Runnable {
 		}
 		else {
 			int containerWidth = (int) (width * scale);
-			int containerHeight = (int) (height * scale) + 28;
+			int containerHeight = (int) (height * scale);
 			setSize(containerWidth, containerHeight);
 		}
-		setResizable(false);
 		setTitle("WauzRaycaster");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBackground(Color.BLACK);
 		setLocationRelativeTo(null);
-		setUndecorated(true);
-		getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 		setVisible(true);
 	}
 	
@@ -185,7 +187,7 @@ public class GameWindow extends JFrame implements Runnable {
 		insetBottom = getInsets().bottom;
 		insetLeft = getInsets().left;
 		insetRight = getInsets().right;
-//		setSize(width + insetLeft + insetRight, height + insetTop + insetBottom);
+		setSize(getWidth() + insetLeft + insetRight, getHeight() + insetTop + insetBottom);
 		isMainThreadRunning = true;
 		mainThread.start();
 	}
@@ -241,7 +243,7 @@ public class GameWindow extends JFrame implements Runnable {
 			lastRun = thisRun;
 			
 			while (delta >= 1) {
-				long millis = System.currentTimeMillis();
+				long nanos = System.nanoTime();
 				
 				currentMap.render(this);
 				for(MovingEntity entity : new ArrayList<>(entities)) {
@@ -249,7 +251,8 @@ public class GameWindow extends JFrame implements Runnable {
 				}
 				delta--;
 				
-				System.out.println("Render-Time: " + (System.currentTimeMillis() - millis) + "\t\t" + (1000 / fps));
+				String time = formatter.format((double) (System.nanoTime() - nanos) / 1000000);
+				System.out.println("Render-Time: " + time + " / " + formatter.format(1000 / fps));
 			}
 			render();
 		}
@@ -264,10 +267,9 @@ public class GameWindow extends JFrame implements Runnable {
 			if(bufferStrategy == null) {
 				createBufferStrategy(3);
 				return;
-			}
+			}		
 			Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
-			paint(graphics);
-			graphics.drawImage(display, insetLeft, insetTop + 28, getSize().width - insetRight, getSize().height - insetBottom, 0, 0, display.getWidth(), display.getHeight(), null);
+			graphics.drawImage(display, insetLeft, insetTop, getSize().width - insetRight, getSize().height - insetBottom, 0, 0, display.getWidth(), display.getHeight(), null);
 			bufferStrategy.show();
 		}
 		catch (Exception e) {
@@ -353,14 +355,14 @@ public class GameWindow extends JFrame implements Runnable {
 	/**
 	 * @return The width of the game window.
 	 */
-	public int getWidth() {
+	public int getGameWidth() {
 		return width;
 	}
 	
 	/**
 	 * @return The width of the game window.
 	 */
-	public int getHeight() {
+	public int getGameHeight() {
 		return height;
 	}
 	
@@ -396,14 +398,14 @@ public class GameWindow extends JFrame implements Runnable {
 	/**
 	 * @return The targeted frames per second.
 	 */
-	public int getFps() {
+	public double getFps() {
 		return fps;
 	}
 
 	/**
 	 * @param fps The new targeted frames per second.
 	 */
-	public void setFps(int fps) {
+	public void setFps(double fps) {
 		this.fps = fps;
 	}
 	
