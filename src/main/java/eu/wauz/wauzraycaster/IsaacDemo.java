@@ -2,8 +2,7 @@ package eu.wauz.wauzraycaster;
 
 import java.awt.Color;
 
-import eu.wauz.wauzraycaster.entity.isaac.IsaacCamera;
-import eu.wauz.wauzraycaster.entity.isaac.IsaacTestEntity;
+import eu.wauz.wauzraycaster.entity.isaac.IsaacEntityFactory;
 import eu.wauz.wauzraycaster.game.GameWindow;
 import eu.wauz.wauzraycaster.game.isaac.IsaacMap;
 import eu.wauz.wauzraycaster.textures.GameTexture;
@@ -12,6 +11,7 @@ import eu.wauz.wauzraycaster.textures.GameTileset;
 /**
  * A demo application to show the capabilities of the engine.
  * Renders a randomly generated top down rougelike world for an Isaac clone.
+ * TODO: Split into multiple methods and update documentation.
  * 
  * @author Wauzmons
  * 
@@ -45,23 +45,13 @@ public class IsaacDemo {
 		
 		IsaacMap map = new IsaacMap(mapMatrix, tileset);
 		map.setBlockSize(32);
-		GameWindow game = new GameWindow(416, 288, 2);
+		GameWindow game = new GameWindow(416, 288, 1);
 		game.setFps(30);
 		game.loadMap(map);
 		
-		IsaacCamera camera = new IsaacCamera(6, 4);
-		camera.setTexture(new GameTexture("images/isaac/joe.png", 32));
-		camera.setShotTexture(new GameTexture(Color.CYAN, 8));
-		camera.setShotSize(0.25);
-		game.placeCamera(camera);
-		
-		IsaacTestEntity entity = new IsaacTestEntity(2, 6);
-		entity.setTexture(new GameTexture("images/isaac/flungus.png", 32));
-		game.placeEntity(entity);
-		
-		IsaacTestEntity entity2 = new IsaacTestEntity(10, 2);
-		entity2.setTexture(new GameTexture("images/isaac/flungus.png", 32));
-		game.placeEntity(entity2);
+		IsaacEntityFactory.placeCamera(game, 6, 4);
+		IsaacEntityFactory.placeTestEntity(game, 2, 6);
+		IsaacEntityFactory.placeTestEntity(game, 10, 2);
 		
 		game.setTitle("The Binding of Joe");
 		game.start();

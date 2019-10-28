@@ -47,7 +47,7 @@ public class IsaacTestEntity extends IsaacEntity implements Damageable {
 	 */
 	public IsaacTestEntity(double xPos, double yPos) {
 		super(xPos, yPos);
-		setFaction(60);
+		setFaction(IsaacFaction.ENEMY);
 		setMovementSpeed(0.08);
 	}
 
@@ -155,14 +155,13 @@ public class IsaacTestEntity extends IsaacEntity implements Damageable {
 	 */
 	@Override
 	public void collide(Collidable entity) {
-		if(entity != null && entity.getFaction() == 11) {
+		if(entity != null && entity.getFaction() == IsaacFaction.PLAYER_PROJECTILE) {
 			changeHitpoints(-1);
 			
 			GameTexture bloodTexture = new GameTexture(Color.RED, 8);
 			for(int direction = 0; direction < 4; direction++) {
-				IsaacProjectile projectile = new IsaacProjectile(this, direction, 60);
+				IsaacProjectile projectile = new IsaacProjectile(this, 0.25, direction, IsaacFaction.ENEMY);
 				projectile.setTexture(bloodTexture);
-				projectile.setSize(0.25);
 				projectile.setMovementSpeed(0.1);
 				projectile.setTicksTillDeath(60);
 			}

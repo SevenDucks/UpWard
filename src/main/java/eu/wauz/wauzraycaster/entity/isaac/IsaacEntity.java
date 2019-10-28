@@ -34,6 +34,26 @@ public abstract class IsaacEntity extends MovingEntity implements Visible, Colli
 	private double size = 1;
 	
 	/**
+	 * The top offset of the entity's hitbox in blocks.
+	 */
+	private double offsetTop = 0;
+	
+	/**
+	 * The bottom offset of the entity's hitbox in blocks.
+	 */
+	private double offsetBottom = 0;
+	
+	/**
+	 * The left offset of the entity's hitbox in blocks.
+	 */
+	private double offsetLeft = 0;
+	
+	/**
+	 * The right offset of the entity's hitbox in blocks.
+	 */
+	private double offsetRight = 0;
+	
+	/**
 	 * The entity's current hitbox.
 	 */
 	private Hitbox hitbox;
@@ -98,19 +118,28 @@ public abstract class IsaacEntity extends MovingEntity implements Visible, Colli
 	 * @param yPosNew The y position to move to.
 	 */
 	public void move(int[][] map, double xPosNew, double yPosNew) {
-		if(map [(int) xPosNew] [(int) yPos] == 0 && map [(int) Math.ceil(xPosNew + size) - 1] [(int) yPos] == 0) {
+		if(map [(int) xPosNew] [(int) yPos] == 0 && map [(int) Math.ceil(xPosNew + size - offsetLeft - offsetRight) - 1] [(int) yPos] == 0) {
 			xPos = xPosNew;
 		}
 		else {
+			xPos = xPosNew > xPos ? (Math.floor(xPosNew) + offsetLeft + offsetRight) : Math.ceil(xPosNew);
 			collide(null);
 		}
-		if(map [(int) xPos] [(int) yPosNew] == 0 && map [(int) xPos] [(int) Math.ceil(yPosNew + size) - 1] == 0) {
+		if(map [(int) xPos] [(int) yPosNew] == 0 && map [(int) xPos] [(int) Math.ceil(yPosNew + size - offsetTop - offsetBottom) - 1] == 0) {
 			yPos = yPosNew;
 		}
 		else {
+			yPos = yPosNew > yPos ? (Math.floor(yPosNew) + offsetTop + offsetBottom) : Math.ceil(yPosNew);
 			collide(null);
 		}
-		hitbox.resize(xPos, yPos, size, size);
+		resizeHitbox();
+	}
+	
+	/**
+	 * Recalculates size and position of the entity's hitbox.
+	 */
+	public void resizeHitbox() {
+		hitbox.resize(xPos, yPos, size - offsetLeft - offsetRight, size - offsetTop - offsetBottom);
 		hitbox.checkForCollisions(this);
 	}
 	
@@ -136,8 +165,8 @@ public abstract class IsaacEntity extends MovingEntity implements Visible, Colli
 		IsaacMap isaacMap = (IsaacMap) map;
 		int[][] pixels = isaacMap.getPixels();
 		int blockSize = isaacMap.getBlockSize();
-		int startX = getStartingPixel(xPos, blockSize);
-		int startY = getStartingPixel(yPos, blockSize);
+		int startX = getStartingPixel(xPos - offsetLeft, blockSize);
+		int startY = getStartingPixel(yPos - offsetTop, blockSize);
 		texture.render(pixels, startX, startY);
 		drawGui(pixels);
 	}
@@ -180,6 +209,67 @@ public abstract class IsaacEntity extends MovingEntity implements Visible, Colli
 	 */
 	public void setSize(double size) {
 		this.size = size;
+		resizeHitbox();
+	}
+	
+	/**
+	 * @return The top offset of the entity's hitbox in blocks.
+	 */
+	public double getOffsetTop() {
+		return offsetTop;
+	}
+	
+	/**
+	 * @param offsetTop The new top offset of the entity's hitbox in blocks.
+	 */
+	public void setOffsetTop(double offsetTop) {
+		this.offsetTop = offsetTop;
+		resizeHitbox();
+	}
+	
+	/**
+	 * @return The bottom offset of the entity's hitbox in blocks.
+	 */
+	public double getOffsetBottom() {
+		return offsetBottom;
+	}
+	
+	/**
+	 * @param offsetBottom The new bottom offset of the entity's hitbox in blocks.
+	 */
+	public void setOffsetBottom(double offsetBottom) {
+		this.offsetBottom = offsetBottom;
+		resizeHitbox();
+	}
+	
+	/**
+	 * @return The left offset of the entity's hitbox in blocks.
+	 */
+	public double getOffsetLeft() {
+		return offsetLeft;
+	}
+	
+	/**
+	 * @param offsetLeft The new left offset of the entity's hitbox in blocks.
+	 */
+	public void setOffsetLeft(double offsetLeft) {
+		this.offsetLeft = offsetLeft;
+		resizeHitbox();
+	}
+	
+	/**
+	 * @return The right offset of the entity's hitbox in blocks.
+	 */
+	public double getOffsetRight() {
+		return offsetRight;
+	}
+	
+	/**
+	 * @param offsetRight The new right offset of the entity's hitbox in blocks.
+	 */
+	public void setOffsetRight(double offsetRight) {
+		this.offsetRight = offsetRight;
+		resizeHitbox();
 	}
 	
 	/**

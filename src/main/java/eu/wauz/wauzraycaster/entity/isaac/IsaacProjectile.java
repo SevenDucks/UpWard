@@ -27,12 +27,17 @@ public class IsaacProjectile extends IsaacEntity {
 	/**
 	 * Creates a new projectile, with given starting position.
 	 * 
-	 * @param shooter The entity who shot this projectile
+	 * @param shooter The entity who shot this projectile.
+	 * @param The size of this projectile's hitbox in blocks.
 	 * @param direction The direction, where every increase is a 90 degree rotation.
+	 * @param faction The faction (player, enemy) id that this entity belongs to.
 	 */
-	public IsaacProjectile(IsaacEntity shooter, int direction, int faction) {
-		super(shooter.getxPos() + 0.375, shooter.getyPos() + 0.25);
+	public IsaacProjectile(IsaacEntity shooter, double size, int direction, int faction) {
+		super(
+				shooter.getxPos() + (shooter.getSize() - size) / 2 - shooter.getOffsetLeft(),
+				shooter.getyPos() + (shooter.getSize() - size) / 2 - shooter.getOffsetTop());
 		this.shooter = shooter;
+		setSize(size);
 		setFaction(faction);
 		setMovementSpeed(0.14);
 		

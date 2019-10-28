@@ -64,7 +64,7 @@ public class IsaacCamera extends IsaacEntity implements Controller, Damageable {
 	public IsaacCamera(double xPos, double yPos) {
 		super(xPos, yPos);
 		guiElements.add(new HitpointHearts(this, 6, 6, 4));
-		setFaction(10);
+		setFaction(IsaacFaction.PLAYER);
 		setMovementSpeed(0.1);
 	}
 
@@ -196,9 +196,8 @@ public class IsaacCamera extends IsaacEntity implements Controller, Damageable {
 	 * @param direction The direction, where every increase is a 90 degree rotation.
 	 */
 	public void shoot(int direction) {
-		IsaacProjectile projectile = new IsaacProjectile(this, direction, 11);
+		IsaacProjectile projectile = new IsaacProjectile(this, shotSize, direction, IsaacFaction.PLAYER_PROJECTILE);
 		projectile.setTexture(shotTexture);
-		projectile.setSize(shotSize);
 		nextShotTicks = 25;
 	}
 	
@@ -317,7 +316,7 @@ public class IsaacCamera extends IsaacEntity implements Controller, Damageable {
 	 */
 	@Override
 	public void collide(Collidable entity) {
-		if(entity != null && entity.getFaction() == 60) {
+		if(entity != null && entity.getFaction() == IsaacFaction.ENEMY) {
 			changeHitpoints(-1);
 		}
 	}
