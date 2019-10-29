@@ -76,4 +76,21 @@ public class WrayUtils {
 		return random.nextInt(bound);
 	}
 	
+	/**
+	 * @param min Minimum returned value.
+	 * @param max Maximum returned value.
+	 * 
+	 * @return A random integer between given values.
+	 */
+	public static int randomInt(int min, int max) {
+		return random.nextInt(max - min + 1) + min;
+	}
+	
+	/**
+	 * @return a random float.
+	 */
+	public static float randomFloat() {
+		return random.nextFloat();
+	}
+	
 }

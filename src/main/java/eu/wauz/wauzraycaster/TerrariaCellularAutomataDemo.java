@@ -5,7 +5,7 @@ import eu.wauz.wauzraycaster.game.terraria.CellularAutomatonMap;
 
 /**
  * A demo application to show the capabilities of the engine.
- * Renders a randomly generated outline for a Terraria clone.
+ * Renders a randomly generated world outline for a Terraria clone.
  * 
  * @author Wauzmons
  * 

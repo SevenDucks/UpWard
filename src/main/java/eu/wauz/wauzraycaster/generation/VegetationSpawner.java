@@ -1,5 +1,7 @@
 package eu.wauz.wauzraycaster.generation;
 
+import eu.wauz.wauzraycaster.util.WrayUtils;
+
 /**
  * Used to populate a cellular automaton with vegetation (e.g. trees).
  * 
@@ -55,10 +57,10 @@ public class VegetationSpawner {
 	public void run(int id, float rarity) {
 		for(int x = 0; x < automaton.getWidth() - width; x++) {
 			for(int y = minDepth; y < maxDepth; y++) {
-				if(automaton.random() > rarity) {
+				if(WrayUtils.randomFloat() > rarity) {
 					continue;
 				}
-				int height = automaton.between(minHeight, maxHeight);
+				int height = WrayUtils.randomInt(minHeight, maxHeight);
 				if(hasEnoughSpace(x, y, height)) {
 					fillSpace(id, x, y, height);
 				}

@@ -23,7 +23,7 @@ public class IsaacDemo {
 	 * The Isaac Map is initialized with an empty array, to determine the room size.
 	 * A tileset is created by loading textures from the resources.
 	 * The Isaac Map creates 32x32 sized blocks from the assigned textures.
-	 * A 416x288 pixel window with doubled size and 30 fps is created, to load the random map.
+	 * A 416x288 pixel window with doubled size and 40 fps is created, to load the random map.
 	 * A controllable 2D camera is added to the map, before the game starts.
 	 * 
 	 * @param args
@@ -45,8 +45,8 @@ public class IsaacDemo {
 		
 		IsaacMap map = new IsaacMap(mapMatrix, tileset);
 		map.setBlockSize(32);
-		GameWindow game = new GameWindow(416, 288, 1);
-		game.setFps(30);
+		GameWindow game = new GameWindow(416, 288, 2);
+		game.setFps(40);
 		game.loadMap(map);
 		
 		IsaacEntityFactory.placeCamera(game, 6, 4);

@@ -1,6 +1,6 @@
 package eu.wauz.wauzraycaster.generation;
 
-import java.util.Random;
+import eu.wauz.wauzraycaster.util.WrayUtils;
 
 /**
  * A two dimensional cellular automaton.
@@ -10,11 +10,6 @@ import java.util.Random;
  * @author Wauzmons
  */
 public class CellularAutomaton {
-	
-	/**
-	 * The instance of the random class, used for seeding.
-	 */
-	private Random random;
 	
 	/**
 	 * The width of the cell matrix.
@@ -73,8 +68,6 @@ public class CellularAutomaton {
 	 * @param height The height of the cell matrix.
 	 */
 	public CellularAutomaton(int width, int height) {
-		random = new Random();
-		
 		this.width = width;
 		this.height = height;
 		cellMatrix = new int[width][height];
@@ -106,7 +99,7 @@ public class CellularAutomaton {
 					alive = false;
 				}
 				else {
-					alive = random() < chanceToStartAlive;
+					alive = WrayUtils.randomFloat() < chanceToStartAlive;
 				}
 				cellMatrix[x][y] = alive ? 1 : 0;
 			}
@@ -138,6 +131,7 @@ public class CellularAutomaton {
 	/**
 	 * @param x The x coordinate of a cell.
 	 * @param y The y coordinate of a cell.
+	 * 
 	 * @return How many living neighbours that cell has.
 	 */
 	public int countLivingNeighbours(int x, int y) {
@@ -184,23 +178,7 @@ public class CellularAutomaton {
 		run(18);
 		
 		return this;
-	}
-	
-	/**
-	 * @return A random float, based on the seed.
-	 */
-	public float random() {
-		return random.nextFloat();
-	}
-	
-	/**
-	 * @param min Minimum returned value.
-	 * @param max Maximum returned value.
-	 * @return A random int, based on the seed.
-	 */
-	public int between(int min, int max) {
-		return random.nextInt(max - min + 1) + min;
-	}
+	}	
 	
 	/**
 	 * @return The width of the cell matrix.
@@ -231,7 +209,7 @@ public class CellularAutomaton {
 	}
 
 	/**
-	 * The 2D array, to save cell states.
+	 * @return The 2D array, to save cell states.
 	 */
 	public int[][] getCellMatrix() {
 		return cellMatrix;

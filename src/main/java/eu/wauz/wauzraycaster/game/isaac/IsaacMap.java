@@ -1,10 +1,9 @@
 package eu.wauz.wauzraycaster.game.isaac;
 
-import eu.wauz.wauzraycaster.game.GameMap;
-import eu.wauz.wauzraycaster.game.GameWindow;
 import eu.wauz.wauzraycaster.entity.MovingEntity;
 import eu.wauz.wauzraycaster.entity.interfaces.Visible;
-import eu.wauz.wauzraycaster.game.GameBlock;
+import eu.wauz.wauzraycaster.game.GameMap;
+import eu.wauz.wauzraycaster.game.GameWindow;
 import eu.wauz.wauzraycaster.textures.GameTileset;
 
 /**
@@ -15,7 +14,7 @@ import eu.wauz.wauzraycaster.textures.GameTileset;
 public class IsaacMap extends GameMap {
 	
 	/**
-	 * The pixels for the game window, that stay the same.
+	 * The pixels for the game window, that stay the same for one room.
 	 */
 	private int[][] staticPixels;
 	
@@ -28,6 +27,11 @@ public class IsaacMap extends GameMap {
 	 * The length of a block in pixels.
 	 */
 	private int blockSize = 16;
+	
+	/**
+	 * The floor, that the player is located in.
+	 */
+	private IsaacFloor currentFloor;
 	
 	/**
 	 * Creates a new isaac map with the size of the given map matrix.
@@ -58,13 +62,11 @@ public class IsaacMap extends GameMap {
 	@Override
 	public void render(GameWindow window) {
 		if(staticPixels == null) {
-			staticPixels = new int[window.getGameWidth()][window.getGameHeight()];
+			currentFloor = new IsaacFloor(this);
+			IsaacRoom room = currentFloor.getStartingRoom();
+			staticPixels = room.getStaticPixels();
 			pixels = new int[window.getGameWidth()][window.getGameHeight()];
-			
-			renderWalls();
-			renderFloor();
-			renderCorners();
-			renderOpenDoors();
+			currentFloor.setCurrentRoom(room);
 		}
 		for(int i = 0; i < pixels.length; i++) {
 			pixels[i] = staticPixels[i].clone();
@@ -81,53 +83,14 @@ public class IsaacMap extends GameMap {
 		}
 	}
 	
-	public void renderFloor() {
-		GameBlock floorBlock = new GameBlock(getTileset().get(1), blockSize);
-		
-		for(int x = 1; x < mapWidth - 1; x++) {
-			for(int y = 1; y < mapHeight - 1; y++) {
-				floorBlock.render(staticPixels, x * blockSize, y * blockSize, 0);
-			}
-		}
+	/**
+	 * Sets the static pixels to the currently loaded room.
+	 */
+	public void resetCachedRoom() {
+		IsaacRoom room = currentFloor.getCurrentRoom();
+		staticPixels = room.getStaticPixels();
 	}
 	
-	public void renderWalls() {
-		GameBlock wallBlock = new GameBlock(getTileset().get(2), blockSize);
-		
-		int rightEdge = (mapWidth - 1) * blockSize;
-		int bottomEdge = (mapHeight - 1) * blockSize;
-		
-		for(int x = 1; x < mapWidth - 1; x++) {
-			wallBlock.render(staticPixels, x * blockSize, 0, 0);
-			wallBlock.render(staticPixels, x * blockSize, bottomEdge, 2);
-		}
-		for(int y = 1; y < mapHeight - 1; y++) {
-			wallBlock.render(staticPixels, 0, y * blockSize, 3);
-			wallBlock.render(staticPixels, rightEdge, y * blockSize, 1);
-		}
-	}
-	
-	public void renderCorners() {
-		GameBlock cornerBlock = new GameBlock(getTileset().get(3), blockSize);
-		
-		int rightEdge = (mapWidth - 1) * blockSize;
-		int bottomEdge = (mapHeight - 1) * blockSize;
-		
-		cornerBlock.render(staticPixels, 0, 0, 0);
-		cornerBlock.render(staticPixels, rightEdge, 0, 1);
-		cornerBlock.render(staticPixels, rightEdge, bottomEdge, 2);
-		cornerBlock.render(staticPixels, 0, bottomEdge, 3);
-	}
-	
-	public void renderOpenDoors() {
-		GameBlock openDoorBlock = new GameBlock(getTileset().get(5), blockSize);
-		
-		openDoorBlock.render(staticPixels, (mapWidth / 2) * blockSize, 0, 0);
-		openDoorBlock.render(staticPixels, (mapWidth - 1) * blockSize, (mapHeight / 2) * blockSize, 1);
-		openDoorBlock.render(staticPixels, (mapWidth / 2) * blockSize, (mapHeight - 1) * blockSize, 2);
-		openDoorBlock.render(staticPixels, 0, (mapHeight / 2) * blockSize, 3);
-	}
-
 	/**
 	 * @return The pixels for the game window.
 	 */

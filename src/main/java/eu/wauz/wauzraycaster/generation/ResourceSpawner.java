@@ -1,5 +1,7 @@
 package eu.wauz.wauzraycaster.generation;
 
+import eu.wauz.wauzraycaster.util.WrayUtils;
+
 /**
  * Used to populate a cellular automaton with resources (e.g. ores).
  * 
@@ -45,7 +47,7 @@ public class ResourceSpawner {
 	public void run(int id, float rarity) {
 		for(int x = 0; x < automaton.getWidth(); x++) {
 			for(int y = minDepth; y < maxDepth; y++) {
-				if(automaton.random() > rarity || y < minDepth || y > maxDepth) {
+				if(WrayUtils.randomFloat() > rarity || y < minDepth || y > maxDepth) {
 					continue;
 				}
 				if(automaton.countDeadNeighbours(x, y) >= minDeadNeighbours) {
