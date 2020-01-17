@@ -360,7 +360,7 @@ public class GameWindow extends JFrame implements Runnable {
 	}
 	
 	/**
-	 * @return The width of the game window.
+	 * @return The height of the game window.
 	 */
 	public int getGameHeight() {
 		return height;
