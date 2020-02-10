@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import eu.wauz.upward.util.UpWardUtils;
+import eu.wauz.upwardutils.UpWardUtils;
 
 /**
  * A square shaped texture, which is rendered into the game.
@@ -82,7 +82,7 @@ public class GameTexture {
 	 */
 	private void loadImage() {
 		try {
-			image = ImageIO.read(UpWardUtils.getResource(path));
+			image = ImageIO.read(UpWardUtils.getResource(getClass(), path));
 			int x = image.getWidth();
 			int y = image.getHeight();
 			image.getRGB(0, 0, x, y, pixels, 0, x);

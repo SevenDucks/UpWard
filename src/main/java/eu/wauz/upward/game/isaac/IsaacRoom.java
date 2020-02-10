@@ -3,13 +3,13 @@ package eu.wauz.upward.game.isaac;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.wauz.upward.UpWardOptions;
 import eu.wauz.upward.entity.MovingEntity;
 import eu.wauz.upward.entity.isaac.IsaacCamera;
 import eu.wauz.upward.entity.isaac.IsaacDoor;
 import eu.wauz.upward.game.GameBlock;
 import eu.wauz.upward.game.GameWindow;
 import eu.wauz.upward.textures.GameTileset;
-import eu.wauz.upward.util.UpWardOptions;
 
 /**
  * A single room of a map for top down rougelike worlds.

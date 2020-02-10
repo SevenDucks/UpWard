@@ -2,7 +2,8 @@ package eu.wauz.upward.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -14,14 +15,14 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import javax.swing.JFrame;
 
+import eu.wauz.upward.UpWardOptions;
 import eu.wauz.upward.entity.MovingEntity;
 import eu.wauz.upward.entity.doom.DoomCamera;
 import eu.wauz.upward.entity.doom.DoomTestEntity;
 import eu.wauz.upward.entity.interfaces.Controller;
-import eu.wauz.upward.util.UpWardOptions;
-import eu.wauz.upward.util.UpWardUtils;
+import eu.wauz.upwardutils.UpWardUtils;
+import eu.wauz.uwt.UFrame;
 
 /**
  * The game window is the most important part of a game.
@@ -29,11 +30,13 @@ import eu.wauz.upward.util.UpWardUtils;
  * It lets events run on a fixed framerate.
  * 
  * @author Wauzmons
+ * 
+ * @see UFrame
  */
-public class GameWindow extends JFrame implements Runnable {
+public class GameWindow extends UFrame implements Runnable {
 
 	/**
-	 * This runnable's UUID.
+	 * This element's UUID.
 	 */
 	private static final long serialVersionUID = 5941362699534781057L;
 	
@@ -86,6 +89,11 @@ public class GameWindow extends JFrame implements Runnable {
 	 * The title of the game window.
 	 */
 	private String title;
+	
+	/**
+	 * The text shown in the top of the window.
+	 */
+	private String infoString = "";
 	
 	/**
 	 * The image of the game window.
@@ -161,22 +169,26 @@ public class GameWindow extends JFrame implements Runnable {
 		display = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) display.getRaster().getDataBuffer()).getData();
 		
-		String iconPath = UpWardUtils.getResource("images/icon.png").getAbsolutePath();
-		setIconImage(Toolkit.getDefaultToolkit().getImage(iconPath));
-		
 		if(width == 0 || height == 0) {
-			setExtendedState(JFrame.MAXIMIZED_BOTH);
+			setExtendedState(MAXIMIZED_BOTH);
 		}
 		else {
 			int containerWidth = (int) (width * scale);
 			int containerHeight = (int) (height * scale);
 			setSize(containerWidth, containerHeight);
 		}
-		setTitle("WauzRaycaster");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBackground(Color.BLACK);
-		setLocationRelativeTo(null);
-		setVisible(true);
+		
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+
+		    @Override
+		    public void windowClosing(WindowEvent e) {
+		        stop();
+		        dispose();
+		    }
+		    
+		});
+		open();
 	}
 	
 	/**
@@ -190,6 +202,8 @@ public class GameWindow extends JFrame implements Runnable {
 		setSize(getWidth() + insetLeft + insetRight, getHeight() + insetTop + insetBottom);
 		isMainThreadRunning = true;
 		mainThread.start();
+		
+		System.out.println("Running: " + getTitle());
 	}
 	
 	/**
@@ -202,6 +216,7 @@ public class GameWindow extends JFrame implements Runnable {
 			if(bgm != null) {
 				bgm.stop();
 			}
+			System.out.println("Stopped: " + getTitle());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -222,7 +237,7 @@ public class GameWindow extends JFrame implements Runnable {
 		try {
 			if(bgmPath != null) {
 				AudioInputStream audioIn;
-				audioIn = AudioSystem.getAudioInputStream(UpWardUtils.getResource(bgmPath));
+				audioIn = AudioSystem.getAudioInputStream(UpWardUtils.getResource(getClass(), bgmPath));
 				bgm = AudioSystem.getClip();
 				bgm.open(audioIn);
 				bgm.setLoopPoints(0, -1);
@@ -252,7 +267,7 @@ public class GameWindow extends JFrame implements Runnable {
 				delta--;
 				
 				String time = formatter.format((double) (System.nanoTime() - nanos) / 1000000);
-				System.out.println("Render-Time: " + time + " / " + formatter.format(1000 / fps));
+				infoString = "Render-Time: " + time + " / " + formatter.format(1000 / fps);
 			}
 			render();
 		}
@@ -266,10 +281,14 @@ public class GameWindow extends JFrame implements Runnable {
 			BufferStrategy bufferStrategy = getBufferStrategy();
 			if(bufferStrategy == null) {
 				createBufferStrategy(3);
+				bufferStrategy = getBufferStrategy();
 				return;
 			}		
 			Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
 			graphics.drawImage(display, insetLeft, insetTop, getSize().width - insetRight, getSize().height - insetBottom, 0, 0, display.getWidth(), display.getHeight(), null);
+			
+			graphics.setColor(Color.GREEN);
+			graphics.drawString(infoString, insetLeft + 5, getSize().height - insetBottom - 5);
 			bufferStrategy.show();
 		}
 		catch (Exception e) {

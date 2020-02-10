@@ -2,9 +2,9 @@ package eu.wauz.upward.entity.doom;
 
 import java.awt.event.KeyEvent;
 
+import eu.wauz.upward.UpWardOptions;
 import eu.wauz.upward.entity.interfaces.Controller;
 import eu.wauz.upward.game.doom.DoomMap;
-import eu.wauz.upward.util.UpWardOptions;
 
 /**
  * A camera entity, that can move across a pseudo 3D doom map.

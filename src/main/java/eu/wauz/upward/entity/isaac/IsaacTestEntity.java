@@ -2,12 +2,12 @@ package eu.wauz.upward.entity.isaac;
 
 import java.awt.Color;
 
+import eu.wauz.upward.UpWardOptions;
 import eu.wauz.upward.entity.interfaces.Collidable;
 import eu.wauz.upward.entity.interfaces.Damageable;
 import eu.wauz.upward.game.isaac.IsaacMap;
 import eu.wauz.upward.textures.GameTexture;
-import eu.wauz.upward.util.UpWardOptions;
-import eu.wauz.upward.util.UpWardUtils;
+import eu.wauz.upwardutils.UpWardUtils;
 
 /**
  * A test entity, that can move and shoot across an isaac map.

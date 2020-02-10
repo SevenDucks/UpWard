@@ -2,13 +2,13 @@ package eu.wauz.upward.entity.isaac;
 
 import java.awt.event.KeyEvent;
 
+import eu.wauz.upward.UpWardOptions;
 import eu.wauz.upward.entity.interfaces.Collidable;
 import eu.wauz.upward.entity.interfaces.Controller;
 import eu.wauz.upward.entity.interfaces.Damageable;
 import eu.wauz.upward.game.isaac.IsaacMap;
 import eu.wauz.upward.gui.HitpointHearts;
 import eu.wauz.upward.textures.GameTexture;
-import eu.wauz.upward.util.UpWardOptions;
 
 /**
  * A camera entity, that can move and shoot across an isaac map.

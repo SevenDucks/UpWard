@@ -1,6 +1,6 @@
 package eu.wauz.upward.generation;
 
-import eu.wauz.upward.util.UpWardUtils;
+import eu.wauz.upwardutils.UpWardUtils;
 
 /**
  * Used to populate a cellular automaton with resources (e.g. ores).

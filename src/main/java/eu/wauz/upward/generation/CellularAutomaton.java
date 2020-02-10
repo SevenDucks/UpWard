@@ -1,6 +1,6 @@
 package eu.wauz.upward.generation;
 
-import eu.wauz.upward.util.UpWardUtils;
+import eu.wauz.upwardutils.UpWardUtils;
 
 /**
  * A two dimensional cellular automaton.

@@ -2,10 +2,10 @@ package eu.wauz.upward.entity.terraria;
 
 import java.awt.event.KeyEvent;
 
+import eu.wauz.upward.UpWardOptions;
 import eu.wauz.upward.entity.MovingEntity;
 import eu.wauz.upward.entity.interfaces.Controller;
 import eu.wauz.upward.game.terraria.TerrariaMap;
-import eu.wauz.upward.util.UpWardOptions;
 
 /**
  * A camera entity, that can move freely across a terraria map.

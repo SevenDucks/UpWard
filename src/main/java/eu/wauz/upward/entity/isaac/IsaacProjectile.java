@@ -1,8 +1,8 @@
 package eu.wauz.upward.entity.isaac;
 
+import eu.wauz.upward.UpWardOptions;
 import eu.wauz.upward.entity.interfaces.Collidable;
 import eu.wauz.upward.game.isaac.IsaacMap;
-import eu.wauz.upward.util.UpWardOptions;
 
 /**
  * A projectile, that can damage entities on an isaac map.

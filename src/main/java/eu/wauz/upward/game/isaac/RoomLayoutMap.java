@@ -50,7 +50,7 @@ public class RoomLayoutMap extends GameMap {
 	 */
 	public void generate() {
 		RoomLayoutGenerator generator = new RoomLayoutGenerator(mapWidth, mapHeight);
-		generator.run(25);
+		generator.run(32);
 		
 		int[][] roomMatrix = generator.getRoomMatrix();
 		

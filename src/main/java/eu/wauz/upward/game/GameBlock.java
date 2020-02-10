@@ -1,7 +1,7 @@
 package eu.wauz.upward.game;
 
 import eu.wauz.upward.textures.GameTexture;
-import eu.wauz.upward.util.UpWardUtils;
+import eu.wauz.upwardutils.UpWardUtils;
 
 /**
  * A block with a square shaped texture for creating 2D worlds.

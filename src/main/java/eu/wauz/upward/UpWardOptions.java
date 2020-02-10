@@ -1,4 +1,4 @@
-package eu.wauz.upward.util;
+package eu.wauz.upward;
 
 import eu.wauz.upward.game.GameControls;
 import eu.wauz.upward.game.GameWindow;

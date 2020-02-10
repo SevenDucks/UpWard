@@ -3,8 +3,8 @@ package eu.wauz.upward.entity;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import eu.wauz.upward.UpWardOptions;
 import eu.wauz.upward.entity.interfaces.Collidable;
-import eu.wauz.upward.util.UpWardOptions;
 
 /**
  * A hitbox for collision detection of entities.

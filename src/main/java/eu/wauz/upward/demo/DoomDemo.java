@@ -1,4 +1,4 @@
-package eu.wauz.upward;
+package eu.wauz.upward.demo;
 
 import java.awt.Color;
 
@@ -15,7 +15,7 @@ import eu.wauz.upward.textures.GameTileset;
  * 
  * @see DoomMap
  */
-public class DoomDemo {
+public class DoomDemo implements Runnable {
 
 	/**
 	 * Initializes an array of integers, that represents the game map.
@@ -25,11 +25,10 @@ public class DoomDemo {
 	 * A controllable 3D camera and an invisible entity are added to the map.
 	 * After setting title and background music, the game is started.
 	 * 
-	 * @param args
-	 * 
 	 * @see GameWindow
 	 */
-	public static void main(String[] args) {
+	@Override
+	public void run() {
 		int[][] mapMatrix = {
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 			{1,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,1,1},

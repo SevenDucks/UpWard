@@ -1,4 +1,4 @@
-package eu.wauz.upward;
+package eu.wauz.upward.demo;
 
 import java.awt.Color;
 
@@ -17,7 +17,7 @@ import eu.wauz.upward.textures.GameTileset;
  * 
  * @see IsaacMap
  */
-public class IsaacDemo {
+public class IsaacDemo implements Runnable {
 
 	/**
 	 * The Isaac Map is initialized with an empty array, to determine the room size.
@@ -26,11 +26,10 @@ public class IsaacDemo {
 	 * A 416x288 pixel window with doubled size and 40 fps is created, to load the random map.
 	 * A controllable 2D camera is added to the map, before the game starts.
 	 * 
-	 * @param args
-	 * 
 	 * @see GameWindow
 	 */
-	public static void main(String[] args) {
+	@Override
+	public void run() {
 		int[][] mapMatrix = new int[13][9];
 		GameTileset tileset = new GameTileset();
 		

@@ -1,4 +1,4 @@
-package eu.wauz.upward;
+package eu.wauz.upward.demo;
 
 import eu.wauz.upward.game.GameWindow;
 import eu.wauz.upward.game.terraria.CellularAutomatonMap;
@@ -12,18 +12,17 @@ import eu.wauz.upward.game.terraria.CellularAutomatonMap;
  * @see TerrariaDemo Full Demo
  * @see CellularAutomatonMap
  */
-public class TerrariaCellularAutomataDemo {
+public class TerrariaCellularAutomataDemo implements Runnable {
 	
 	/**
 	 * The Cellular Automaton Map is initialized with an empty array,
 	 * that will hold the map data, that is freshly generated every frame.
 	 * A 1200x350 pixel window with 1 fps is created, to load the map.
 	 * 
-	 * @param args
-	 * 
 	 * @see GameWindow
 	 */
-	public static void main(String[] args) {
+	@Override
+	public void run() {
 		int width = 1200;
 		int height = 350;
 		int[][] mapMatrix = new int[width][height];
