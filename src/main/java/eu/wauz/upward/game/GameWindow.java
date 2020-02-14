@@ -121,6 +121,11 @@ public class GameWindow extends UFrame implements Runnable {
 	private Controller currentCamera;
 	
 	/**
+	 * The default listener of the window.
+	 */
+	private GameWindowListener defaultListener;
+	
+	/**
 	 * All moving entities, located on the map.
 	 */
 	private List<MovingEntity> entities = new ArrayList<>();
@@ -162,10 +167,12 @@ public class GameWindow extends UFrame implements Runnable {
 	}
 	
 	/**
-	 * Loads the displayed image, aswell as window size, title, background and visibility.
+	 * Loads the displayed image, aswell as window listener, size, title, background and visibility.
 	 */
 	private void initialize() {
 		UpWardOptions.WINDOWS.setMainWindow(this);
+		defaultListener = new GameWindowListener();
+		addKeyListener(defaultListener);
 		display = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) display.getRaster().getDataBuffer()).getData();
 		
@@ -287,8 +294,10 @@ public class GameWindow extends UFrame implements Runnable {
 			Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
 			graphics.drawImage(display, insetLeft, insetTop, getSize().width - insetRight, getSize().height - insetBottom, 0, 0, display.getWidth(), display.getHeight(), null);
 			
-			graphics.setColor(Color.GREEN);
-			graphics.drawString(infoString, insetLeft + 5, getSize().height - insetBottom - 5);
+			if(defaultListener.isShowInfoString()) {
+				graphics.setColor(Color.GREEN);
+				graphics.drawString(infoString, insetLeft + 5, getSize().height - insetBottom - 5);
+			}
 			bufferStrategy.show();
 		}
 		catch (Exception e) {

@@ -70,7 +70,6 @@ public class IsaacCamera extends IsaacEntity implements Controller, Damageable {
 
 	/**
 	 * Determine what to do if a key is typed.
-	 * Initializes shots.
 	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
