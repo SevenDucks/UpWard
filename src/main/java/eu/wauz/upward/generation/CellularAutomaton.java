@@ -52,6 +52,26 @@ public class CellularAutomaton {
 	private int livingYSpaceBottom = 0;
 	
 	/**
+	 * The left space that is guaranteed to start alive.
+	 */
+	private int livingXSpaceLeft = 0;
+	
+	/**
+	 * The right space that is guaranteed to start alive.
+	 */
+	private int livingXSpaceRight = 0;
+	
+	/**
+	 * The top space that is guaranteed to start dead.
+	 */
+	private int deadYSpaceTop = 0;
+	
+	/**
+	 * The botton space that is guaranteed to start dead.
+	 */
+	private int deadYSpaceBottom = 0;
+	
+	/**
 	 * The left space that is guaranteed to start dead.
 	 */
 	private int deadXSpaceLeft = 0;
@@ -92,10 +112,10 @@ public class CellularAutomaton {
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
 				boolean alive;
-				if(livingYSpaceTop > y || height - livingYSpaceBottom < y) {
+				if(livingYSpaceTop > y || height - livingYSpaceBottom < y || livingXSpaceLeft > x || width - livingXSpaceRight < x) {
 					alive = true;
 				}
-				else if(deadXSpaceLeft > x || width - deadXSpaceRight < x) {
+				else if(deadYSpaceTop > y || height - deadYSpaceBottom < y || deadXSpaceLeft > x || width - deadXSpaceRight < x) {
 					alive = false;
 				}
 				else {
@@ -163,6 +183,22 @@ public class CellularAutomaton {
 	public int countDeadNeighbours(int x, int y) {
 		return 8 - countLivingNeighbours(x, y);
 	}
+	
+	/**
+	 * @return A configured automaton, with a generated cave room.
+	 */
+	public CellularAutomaton withCavePreset() {
+		setChanceToStartAlive(0.46f);
+		setBirthLimit(4);
+		setDeathLimit(4);
+		setLivingYSpaceTop(8);
+		setLivingYSpaceBottom(8);
+		setLivingXSpaceLeft(8);
+		setLivingXSpaceRight(8);
+		run(8);
+		
+		return this;
+	}	
 	
 	/**
 	 * @return A configured automaton, with a generated terraria style world.
@@ -283,6 +319,62 @@ public class CellularAutomaton {
 	 */
 	public void setLivingYSpaceBottom(int livingYSpaceBottom) {
 		this.livingYSpaceBottom = livingYSpaceBottom;
+	}
+
+	/**
+	 * @return The left space that is guaranteed to start alive.
+	 */
+	public int getLivingXSpaceLeft() {
+		return livingXSpaceLeft;
+	}
+
+	/**
+	 * @param livingXSpaceLeft The new left space that is guaranteed to start alive.
+	 */
+	public void setLivingXSpaceLeft(int livingXSpaceLeft) {
+		this.livingXSpaceLeft = livingXSpaceLeft;
+	}
+
+	/**
+	 * @return The right space that is guaranteed to start alive.
+	 */
+	public int getLivingXSpaceRight() {
+		return livingXSpaceRight;
+	}
+
+	/**
+	 * @param livingXSpaceRight The new right space that is guaranteed to start alive.
+	 */
+	public void setLivingXSpaceRight(int livingXSpaceRight) {
+		this.livingXSpaceRight = livingXSpaceRight;
+	}
+
+	/**
+	 * @return The top space that is guaranteed to start dead.
+	 */
+	public int getDeadYSpaceTop() {
+		return deadYSpaceTop;
+	}
+
+	/**
+	 * @param deadYSpaceTop The new top space that is guaranteed to start dead.
+	 */
+	public void setDeadYSpaceTop(int deadYSpaceTop) {
+		this.deadYSpaceTop = deadYSpaceTop;
+	}
+
+	/**
+	 * @return The bottom space that is guaranteed to start dead.
+	 */
+	public int getDeadYSpaceBottom() {
+		return deadYSpaceBottom;
+	}
+
+	/**
+	 * @param deadYSpaceBottom The new bottom space that is guaranteed to start dead.
+	 */
+	public void setDeadYSpaceBottom(int deadYSpaceBottom) {
+		this.deadYSpaceBottom = deadYSpaceBottom;
 	}
 
 	/**
