@@ -41,6 +41,12 @@ public class RoomLayoutGenerator {
 	 */
 	private List<Pair<Integer, Integer>> freeRooms = new ArrayList<>();
 	
+	/**
+	 * Creates a new room layout generator with given sizes.
+	 * 
+	 * @param width The width of the room matrix.
+	 * @param height The height of the room matrix.
+	 */
 	public RoomLayoutGenerator(int width, int height) {
 		this.width = width;
 		this.height = height;

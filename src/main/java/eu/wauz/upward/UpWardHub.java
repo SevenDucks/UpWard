@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import eu.wauz.upward.demo.DoomDemo;
 import eu.wauz.upward.demo.IsaacDemo;
 import eu.wauz.upward.demo.IsaacRoomLayoutDemo;
+import eu.wauz.upward.demo.PathDemo;
 import eu.wauz.upward.demo.TerrariaCellularAutomataDemo;
 import eu.wauz.upward.demo.TerrariaDemo;
 import eu.wauz.upwardutils.UpWardUtils;
@@ -85,6 +86,7 @@ public class UpWardHub extends UFrame {
 		flow.add(new UButton("Doom", new DoomDemo()).withBackground(red));
 		flow.add(new UButton("Isaac", new IsaacDemo()).withBackground(orange));
 		flow.add(new UButton("Isaac Rooms", new IsaacRoomLayoutDemo()).withBackground(orange));
+		flow.add(new UButton("Paths", new PathDemo()).withBackground(orange));
 		flow.add(new UButton("Terraria", new TerrariaDemo()).withBackground(green));
 		flow.add(new UButton("Terraria Map", new TerrariaCellularAutomataDemo()).withBackground(green));
 		parent.add(flow);
